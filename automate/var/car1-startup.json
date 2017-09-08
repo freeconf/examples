@@ -1,0 +1,13 @@
+{
+	"restconf" : {
+		"web" : {
+			"port" : ":8000"
+		},
+		"callHome" : {
+			"deviceId" : "car1",
+			"localAddress" : "http://{REQUEST_ADDRESS}:8000/restconf",
+			"address" : "http://127.0.0.1:9000",
+			"endpoint" : "/restconf"
+		}
+	}	
+}

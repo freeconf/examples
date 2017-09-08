@@ -1,0 +1,10 @@
+INFO 2017/07/22 14:49:00 => OPTIONS http://127.0.0.1:9000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:00 => GET http://127.0.0.1:9000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:00 => POST http://127.0.0.1:9000/restconf/data/map:register
+INFO 2017/07/22 14:49:00 => OPTIONS http://127.0.0.1:9000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:00 => GET http://127.0.0.1:9000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:02 => OPTIONS http://127.0.0.1:8000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:02 => GET http://127.0.0.1:8000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:03 => OPTIONS http://127.0.0.1:8000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:03 => OPTIONS http://127.0.0.1:8000/restconf/data/ietf-yang-library:modules-state/module
+INFO 2017/07/22 14:49:03 => GET http://127.0.0.1:8000/restconf/data/ietf-yang-library:modules-state/module

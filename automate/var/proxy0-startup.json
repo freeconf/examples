@@ -1,0 +1,13 @@
+{
+	"restconf" : {
+		"web" : {
+			"port" : ":9000"
+		},
+		"callHome" : {
+			"deviceId" : "proxy0",
+			"localAddress" : "http://{REQUEST_ADDRESS}:9000/restconf",
+			"address" : "http://127.0.0.1:9000",
+			"endpoint" : "/restconf"
+		}
+	}	
+}

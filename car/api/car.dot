@@ -1,0 +1,109 @@
+digraph G {
+        fontname = "Bitstream Vera Sans"
+        fontsize = 8
+
+        node [
+                fontname = "Bitstream Vera Sans"
+                fontsize = 8
+                shape = "record"
+        ]
+
+        edge [
+                fontname = "Bitstream Vera Sans"
+                fontsize = 8
+        ]
+
+
+       car [
+         label = "{|miles : int64\llastRotation : int64\lrunning : boolean\lspeed : int32\l}"
+       ]
+
+
+
+       car_rotateTires [
+         label = "{rotateTires (action)|}"
+         color = "#b64ff7"
+       ]
+       car -> car_rotateTires [
+         style = "dashed"
+         color = "#b64ff7"
+       ]
+
+       car_replaceTires [
+         label = "{replaceTires (action)|}"
+         color = "#b64ff7"
+       ]
+       car -> car_replaceTires [
+         style = "dashed"
+         color = "#b64ff7"
+       ]
+
+
+
+       car_update [
+         label = "{update (notification)|tire[…] : \lmiles : int64\llastRotation : int64\lrunning : boolean\lspeed : int32\l}"
+         color = "#4fb32e"
+       ]
+       car -> car_update [
+         style = "dashed"
+         color = "#4fb32e"
+       ]
+
+
+
+       car_tire [
+         label = "{tire[…]|pos : int32\lsize : string\lworn : boolean\lwear : decimal64\lflat : boolean\l}"
+       ]
+
+
+
+
+
+
+
+       car_engine [
+         label = "{engine|}"
+       ]
+
+
+
+
+
+
+
+       car_engine_specs [
+         label = "{specs|horsepower : int32\l}"
+       ]
+
+
+
+
+
+
+
+
+
+
+  
+    car -> car_tire
+    
+    
+    
+    
+    car -> car_engine
+
+  
+    
+    
+    
+    
+    
+
+  
+    car_engine -> car_engine_specs
+
+  
+    
+
+
+}
