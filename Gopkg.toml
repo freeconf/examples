@@ -1,0 +1,3 @@
+[[constraint]]
+  branch = "master"
+  name = "github.com/c2stack/c2g"
