@@ -27,24 +27,24 @@ module car {
         }
 
         leaf miles {
-            config "false";
             type int64;
+            config false;
         }
 
         leaf lastRotation {
             type int64;
-            config "false";
+            config false;
         }
 
         leaf running {
             type boolean;
-            config "false";
+            config false;
         }
         
         leaf speed {
             description "number of millisecs it takes to travel one mile";
             type int32;
-            default "1000";
+            default 1000;
         }
     }
 
@@ -54,18 +54,18 @@ module car {
         }
         leaf size {
             type string;
-            default "15";
+            default 15;
         }
         leaf worn {
-            config "false";
+            config false;
             type boolean;
         }
         leaf wear {
-            config "false";
+            config false;
             type decimal64;
         }
         leaf flat {
-            config "false";
+            config false;
             type boolean;
         }
     }

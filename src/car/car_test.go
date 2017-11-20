@@ -2,7 +2,7 @@ package car
 
 import "testing"
 
-func Test_Car(t *testing.T) {
+func TestCar(t *testing.T) {
 	c := New()
 	c.Speed = 1
 	update := make(chan bool)

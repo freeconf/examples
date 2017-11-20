@@ -3,15 +3,16 @@ package garage
 import (
 	"testing"
 
+	"car"
+
 	"github.com/freeconf/c2g/device"
 	"github.com/freeconf/c2g/meta"
-	"github.com/freeconf/examples/car"
 )
 
 var devices = make(map[string]device.Device)
 
 func TestManagement(t *testing.T) {
-	ypath := meta.PathStreamSource("../c2g/yang:../car:.")
+	ypath := meta.PathStreamSource("../vendor/github.com/freeconf/c2g/yang:../car:.")
 
 	dm := device.NewMap()
 
