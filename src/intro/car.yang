@@ -2,15 +2,43 @@ module car {
 
     revision 0;
     
+    typedef state {
+        type enumeration {
+            enum outOfGas;
+            enum running;
+        }
+    }
+
+    leaf state {
+        type state;
+    }
+
     leaf speed {
        type int32;
-       default "1000";
+       default 100;
     }               
 
     leaf miles {
        type int64;
-       config "false";
-    }               
+       config false;
+    }
 
-    rpc start {}
+    leaf gas {
+        type int32;
+        config false;        
+    }     
+
+    notification update {
+        leaf state {
+            type state;
+        }
+    }
+
+    rpc refuel {
+        input {
+            leaf gas {
+                type int32;
+            }
+        }
+    }
 }
