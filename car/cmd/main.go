@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"car"
+	"github.com/freeconf/examples/car"
 
 	"github.com/freeconf/c2g/c2"
 	"github.com/freeconf/c2g/device"
@@ -35,14 +35,13 @@ func main() {
 	// Where to looks for yang files, this tells library to use these
 	// two relative paths.  StreamSource is an abstraction to data sources
 	// that might be local or remote or combinations of all the above.
-	yangPath := meta.PathStreamSource("..:../../../yang")
-	uiPath := &meta.FileStreamSource{Root: "../web"}
+	yangPath := meta.PathStreamSource("..:../../../c2g/yang")
 
 	// Every management has a "device" container. A device can have many "modules"
 	// installed which are really microservices.
 	//   carPath - where UI files are located
 	//   ypath - where *.yang files are located
-	d := device.NewWithUi(yangPath, uiPath)
+	d := device.New(yangPath)
 
 	// Here we are installing the "car" module which is our main application.
 	//   "car" - the name of the module causing car.yang to load from yang path

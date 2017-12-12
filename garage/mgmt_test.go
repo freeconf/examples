@@ -3,7 +3,7 @@ package garage
 import (
 	"testing"
 
-	"car"
+	"github.com/freeconf/examples/car"
 
 	"github.com/freeconf/c2g/device"
 	"github.com/freeconf/c2g/meta"

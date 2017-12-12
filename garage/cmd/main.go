@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"garage"
+	"github.com/freeconf/examples/garage"
 
 	"github.com/freeconf/c2g/c2"
 	"github.com/freeconf/c2g/device"
@@ -20,17 +20,12 @@ func main() {
 
 	app := garage.NewGarage()
 
-	// Where to looks for yang files, this tells library to use these
-	// two relative paths.  StreamSource is an abstraction to data sources
-	// that might be local or remote or combinations of all the above.
-	uiPath := &meta.FileStreamSource{Root: "../web"}
-
 	// notice the garage doesn't need yang for car.  it will get
 	// that from proxy, that will in turn get it from car node, having
 	// said that, if it does find yang locally, it will use it
-	yangPath := meta.PathStreamSource("..:../../../yang")
+	yangPath := meta.PathStreamSource("..:../../../c2g/yang")
 
-	d := device.NewWithUi(yangPath, uiPath)
+	d := device.New(yangPath)
 
 	mgmt := restconf.NewServer(d)
 

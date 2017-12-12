@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"automate"
+	"github.com/freeconf/examples/automate"
 
 	"github.com/freeconf/c2g/c2"
 	"github.com/freeconf/c2g/device"

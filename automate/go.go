@@ -3,8 +3,8 @@ package automate
 import (
 	"fmt"
 
-	"car"
-	"garage"
+	"github.com/freeconf/examples/car"
+	"github.com/freeconf/examples/garage"
 
 	"github.com/freeconf/c2g/device"
 	"github.com/freeconf/c2g/meta"

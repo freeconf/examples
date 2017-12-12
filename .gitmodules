@@ -1,6 +1,6 @@
 [submodule "src/vendor/github.com/freeconf/c2g"]
-	path = src/vendor/github.com/freeconf/c2g
+	path = vendor/github.com/freeconf/c2g
 	url = git@github.com:freeconf/c2g.git
 [submodule "src/vendor/golang.org/x/net"]
-	path = src/vendor/golang.org/x/net
+	path = vendor/golang.org/x/net
 	url = https://github.com/golang/net.git
