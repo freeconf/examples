@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/freeconf/c2g/c2"
+	"github.com/freeconf/gconf/c2"
 )
 
 //////////////////////////

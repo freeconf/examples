@@ -3,8 +3,8 @@ package automate
 import (
 	"fmt"
 
-	"github.com/freeconf/c2g/node"
-	"github.com/freeconf/c2g/nodes"
+	"github.com/freeconf/gconf/node"
+	"github.com/freeconf/gconf/nodes"
 )
 
 func Garage(sys System, speed int) error {

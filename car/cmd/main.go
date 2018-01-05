@@ -5,10 +5,10 @@ import (
 
 	"github.com/freeconf/examples/car"
 
-	"github.com/freeconf/c2g/c2"
-	"github.com/freeconf/c2g/device"
-	"github.com/freeconf/c2g/meta"
-	"github.com/freeconf/c2g/restconf"
+	"github.com/freeconf/gconf/c2"
+	"github.com/freeconf/gconf/device"
+	"github.com/freeconf/gconf/meta"
+	"github.com/freeconf/gconf/restconf"
 )
 
 // Initialize and start our Car micro-service application with C2Stack for
@@ -16,7 +16,7 @@ import (
 //
 // To run:
 //    export GOPATH=`pwd`
-//    cd ./src/vendor/github.com/freeconf/c2g/examples/car/cmd
+//    cd ./src/vendor/github.com/freeconf/gconf/examples/car/cmd
 //    go run ./main.go -startup startup.json
 //
 // Then open web browser to
@@ -35,7 +35,7 @@ func main() {
 	// Where to looks for yang files, this tells library to use these
 	// two relative paths.  StreamSource is an abstraction to data sources
 	// that might be local or remote or combinations of all the above.
-	yangPath := meta.PathStreamSource("..:../../../c2g/yang")
+	yangPath := meta.PathStreamSource("..:../../../gconf/yang")
 
 	// Every management has a "device" container. A device can have many "modules"
 	// installed which are really microservices.

@@ -12,9 +12,9 @@ import (
 
 	"syscall"
 
-	"github.com/freeconf/c2g/c2"
-	"github.com/freeconf/c2g/meta"
-	"github.com/freeconf/c2g/restconf"
+	"github.com/freeconf/gconf/c2"
+	"github.com/freeconf/gconf/meta"
+	"github.com/freeconf/gconf/restconf"
 )
 
 type CmdSystem struct {

@@ -5,14 +5,14 @@ import (
 
 	"github.com/freeconf/examples/car"
 
-	"github.com/freeconf/c2g/device"
-	"github.com/freeconf/c2g/meta"
+	"github.com/freeconf/gconf/device"
+	"github.com/freeconf/gconf/meta"
 )
 
 var devices = make(map[string]device.Device)
 
 func TestManagement(t *testing.T) {
-	ypath := meta.PathStreamSource("../vendor/github.com/freeconf/c2g/yang:../car:.")
+	ypath := meta.PathStreamSource("../vendor/github.com/freeconf/gconf/yang:../car:.")
 
 	dm := device.NewMap()
 

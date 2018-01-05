@@ -1,7 +1,7 @@
 package garage
 
 import (
-	"github.com/freeconf/c2g/node"
+	"github.com/freeconf/gconf/node"
 )
 
 // Garage and Car run in different spaces, so we model only the part of the

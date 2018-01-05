@@ -5,10 +5,10 @@ import (
 
 	"github.com/freeconf/examples/garage"
 
-	"github.com/freeconf/c2g/c2"
-	"github.com/freeconf/c2g/device"
-	"github.com/freeconf/c2g/meta"
-	"github.com/freeconf/c2g/restconf"
+	"github.com/freeconf/gconf/c2"
+	"github.com/freeconf/gconf/device"
+	"github.com/freeconf/gconf/meta"
+	"github.com/freeconf/gconf/restconf"
 )
 
 var startup = flag.String("startup", "startup.json", "startup configuration file.")
@@ -23,7 +23,7 @@ func main() {
 	// notice the garage doesn't need yang for car.  it will get
 	// that from proxy, that will in turn get it from car node, having
 	// said that, if it does find yang locally, it will use it
-	yangPath := meta.PathStreamSource("..:../../../c2g/yang")
+	yangPath := meta.PathStreamSource("..:../../../gconf/yang")
 
 	d := device.New(yangPath)
 

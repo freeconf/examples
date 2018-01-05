@@ -1,6 +1,6 @@
 package automate
 
-import "github.com/freeconf/c2g/device"
+import "github.com/freeconf/gconf/device"
 
 type System interface {
 	New(role string) (*Handle, error)

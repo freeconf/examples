@@ -6,8 +6,8 @@ import (
 	"github.com/freeconf/examples/car"
 	"github.com/freeconf/examples/garage"
 
-	"github.com/freeconf/c2g/device"
-	"github.com/freeconf/c2g/meta"
+	"github.com/freeconf/gconf/device"
+	"github.com/freeconf/gconf/meta"
 )
 
 type GoSystem struct {

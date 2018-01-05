@@ -10,10 +10,10 @@ import (
 
 	"io/ioutil"
 
-	"github.com/freeconf/c2g/c2"
-	"github.com/freeconf/c2g/meta"
-	"github.com/freeconf/c2g/meta/render"
-	"github.com/freeconf/c2g/meta/yang"
+	"github.com/freeconf/gconf/c2"
+	"github.com/freeconf/gconf/meta"
+	"github.com/freeconf/gconf/meta/render"
+	"github.com/freeconf/gconf/meta/yang"
 )
 
 var moduleNamePtr = flag.String("module", "", "Module to be loaded.")

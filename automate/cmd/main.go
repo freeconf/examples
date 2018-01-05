@@ -5,15 +5,15 @@ import (
 
 	"github.com/freeconf/examples/automate"
 
-	"github.com/freeconf/c2g/c2"
-	"github.com/freeconf/c2g/device"
-	"github.com/freeconf/c2g/meta"
+	"github.com/freeconf/gconf/c2"
+	"github.com/freeconf/gconf/device"
+	"github.com/freeconf/gconf/meta"
 )
 
 // Initialize and start our RESTCONF proxy service.
 //
 // To run:
-//    cd ./src/vendor/github.com/freeconf/c2g/examples/proxy
+//    cd ./src/vendor/github.com/freeconf/gconf/examples/proxy
 //    go run ./main.go
 //
 // Then open web browser to
