@@ -24,7 +24,7 @@ func Manage(c *Car) node.Node {
 		OnChild: func(p node.Node, r node.ChildRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
 			case "tire":
-				return tiresNode(c.Tire), nil
+				return tiresNode(c), nil
 			case "specs":
 				// knows how to r/w config from a map
 				return nodes.ReflectChild(c.Specs), nil
@@ -82,7 +82,7 @@ func Manage(c *Car) node.Node {
 
 // tiresNode handles list of tires.
 //     list tire { ... }
-func tiresNode(tires []*tire) node.Node {
+func tiresNode(c *Car) node.Node {
 	return &nodes.Basic{
 		// Handling lists are
 		OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
@@ -92,17 +92,22 @@ func tiresNode(tires []*tire) node.Node {
 
 			// request for specific item in list
 			if key != nil {
-				pos = key[0].Value().(int)
-				if pos >= len(tires) {
-					return nil, nil, nil
+				if r.New {
+					t = &tire{
+						Pos: key[0].Value().(int),
+					}
+					c.Tire = append(c.Tire, t)
+				} else {
+					pos = key[0].Value().(int)
+					if pos >= len(c.Tire) {
+						return nil, nil, nil
+					}
+					t = c.Tire[pos]
 				}
-			}
-			if key != nil {
-				t = tires[pos]
 			} else {
 				// request for nth item in list
-				if r.Row < len(tires) {
-					t = tires[r.Row]
+				if r.Row < len(c.Tire) {
+					t = c.Tire[r.Row]
 					key = []val.Value{val.Int32(r.Row)}
 				}
 			}
