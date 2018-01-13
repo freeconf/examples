@@ -1,6 +1,9 @@
 package car
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/freeconf/gconf/node"
 	"github.com/freeconf/gconf/nodes"
 	"github.com/freeconf/gconf/val"
@@ -88,17 +91,21 @@ func tiresNode(c *Car) node.Node {
 		OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
 			var t *tire
 			key := r.Key
-			var pos int
 
 			// request for specific item in list
 			if key != nil {
 				if r.New {
+					nextPos := len(c.Tire)
+					if key[0].Value().(int) != nextPos {
+						msg := fmt.Sprintf("pos must be next sequential value %d", nextPos)
+						return nil, nil, errors.New(msg)
+					}
 					t = &tire{
-						Pos: key[0].Value().(int),
+						Pos: nextPos,
 					}
 					c.Tire = append(c.Tire, t)
 				} else {
-					pos = key[0].Value().(int)
+					pos := key[0].Value().(int)
 					if pos >= len(c.Tire) {
 						return nil, nil, nil
 					}
