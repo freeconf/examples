@@ -1,0 +1,95 @@
+<html><!DOCTYPE html>
+<!--
+    NOTE: This uses websockets and this is going to be rewritten to use
+    SSE over HTTP/2 instead once I merge that feature branch in.
+    
+    This is an example of using RESTCONF API to:
+     - read config (speed)
+     - read metrics (miles, gas, running state)
+     - call RPCs - (refuel)
+     - subscribe to events - (update of running state)
+
+     This uses ES6 modules. If you have issues, check your browser for support: 
+       https://caniuse.com/#search=es6-module
+-->
+<html lang="en">
+    <head>
+        <title>Car Demo</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    </head>
+    <body>  
+        <div id="car"></div>
+        <button id="refuel" onclick='refuel()'>Refuel</button>
+        <button id="faster" onclick='speed(-10)'>Faster</button>
+        <button id="slower" onclick='speed(10)'>Slower</button>
+
+        <script>
+            let car;
+
+            // Reading config and metrics
+            function update() {
+                fetch("/restconf/data/car:").then((resp) => {
+                    return resp.json();
+                }).then((data) => {
+                    car = data;
+                    let e = document.getElementById("car");
+                    e.innerHTML = 
+                        '<div>Miles: ' + data.miles +' miles</div>' +
+                        '<div>State: ' + data.state + '</div>' +
+                        '<div>Speed: ' + (3600000/data.speed) + ' mph</div>' +
+                        '<div>Gas: ' + data.gas + ' gallons</div>';
+                }).catch(console.log);
+            };
+            
+            // Call RPC
+            function refuel() {
+                fetch('/restconf/data/car:refuel', {
+                    method: 'POST',
+                    body : JSON.stringify({
+                            gas: 18
+                        })
+                }).then(() => {
+                    update();
+                }).catch(console.log);                
+            }       
+
+            // Config edit
+            function speed(s) {
+                fetch('/restconf/data/car:', {
+                    method: 'PUT',
+                    body : JSON.stringify({
+                            speed: car.speed + s
+                        })
+                }).then(() => {
+                    update();
+                }).catch(console.log);                
+            }
+
+            // initial read of data
+            update();
+        </script>
+        <script type="module">
+            import {notifier} from './notify.js';
+
+            // initialize notifier over websockets
+            function notify()  {
+                let wsUrl = 'ws://' + document.location.host + '/restconf/streams';
+                let driver = new WebSocket(wsUrl);
+                let wsocket = new notifier(driver);
+                wsocket.done = function() {
+                    wsocket.close();
+                    wsocket = null;
+                };
+                return wsocket;
+            }
+            
+            // subscribe for updates
+            let group = 'demo';
+            let path = 'update';
+            let modul = 'car';
+            notify().on(group, path, modul, (update, err) => {
+                window.update();
+            });
+        </script>
+    </body>
+</html>

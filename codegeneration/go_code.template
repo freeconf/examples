@@ -1,0 +1,111 @@
+package car
+
+// This file was auto-generated. Do not edit
+
+import (
+  "github.com/freeconf/yang/val"
+  "github.com/freeconf/yang/node"
+  "github.com/freeconf/yang/nodes"
+)
+
+{{range .All}} 
+
+/* {{title .Meta.Ident}} - {{.Meta.Description}}
+*/
+type {{title .Meta.Ident}} struct {
+{{- range .Fields}}
+    {{- if .IsArray}}
+        {{title .Meta.Ident}} []{{fieldType .Meta.Type}}
+    {{- else }}
+        {{title .Meta.Ident}} {{fieldType .Meta.Type}}
+    {{- end }}
+{{- end }}
+{{- range .Objects}}
+	{{title .Meta.Ident}} *{{title .Meta.Ident}}
+{{- end }}
+{{- range .Arrays}}
+	{{title .Meta.Ident}} []*{{title .Meta.Ident}}
+{{- end }}
+}
+
+{{end}}
+
+{{range .All}}
+
+/*  {{title .Meta.Ident}}Node - Management of {{.Meta.Description}}
+*/
+func {{title .Meta.Ident}}Node(o *{{title .Meta.Ident}}) node.Node {
+    return &nodes.Basic{
+{{- if .Fields }}        
+        OnField: func(r node.FieldRequest, hnd *node.ValueHandle) error {            
+            switch r.Meta.Ident() {
+{{- range .Fields}}
+                case "{{.Meta.Ident}}":
+    {{- if .IsArray}}
+                    hnd.Val = val.{{val .Meta.Type}}List(o.{{title .Meta.Ident}})
+    {{- else }}
+                    hnd.Val = val.{{val .Meta.Type}}(o.{{title .Meta.Ident}})
+    {{- end }}
+{{- end }}
+            }
+            return nil
+        },
+{{- end}}
+{{- if or .Objects .Arrays }}            
+        OnChild: func(r node.ChildRequest) (node.Node, error) {
+            switch r.Meta.Ident() {
+{{- range .Objects}}
+                case "{{.Meta.Ident}}":
+                    if o.{{title .Meta.Ident}} != nil {
+                        return {{title .Meta.Ident}}Node(o.{{title .Meta.Ident}}), nil
+                    }
+{{- end }}
+{{- range .Arrays}}
+                case "{{.Meta.Ident}}":
+                    if len(o.{{title .Meta.Ident}}) > 0  {
+                        return {{title .Meta.Ident}}ListNode(o.{{title .Meta.Ident}}), nil
+                    }
+{{- end }}
+            }
+            return nil, nil
+        },
+{{- end }}
+{{- if .Functions }}
+        OnAction: func(r node.ActionRequest) (node.Node, error) {
+            switch r.Meta.Ident() {
+    {{- range .Functions}}
+                case "{{.Meta.Ident}}":
+                    return o.do{{title .Meta.Ident}}(r)              
+    {{- end }}
+            }
+            return nil, nil
+        },
+{{- end }}
+{{- if .Events }}
+        OnNotify: func(r node.NotifyRequest) (node.NotifyCloser, error) {
+            switch r.Meta.Ident() {
+    {{- range .Events}}
+                case "{{.Meta.Ident}}":
+                    return o.on{{title .Meta.Ident}}(r)
+    {{- end }}
+            }
+            return nil, nil
+        },
+{{- end }}
+    }
+}
+
+{{range .Arrays}}
+func {{title .Meta.Ident}}ListNode(o []*{{title .Meta.Ident}}) node.Node {
+    return &nodes.Basic{
+        OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
+            if r.Row < len(o) {
+                return {{title .Meta.Ident}}Node(o[r.Row]), nil, nil
+            }
+            return nil, nil, nil
+        },
+    }
+}
+{{- end }}
+
+{{end}}
