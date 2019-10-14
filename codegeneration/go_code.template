@@ -5,7 +5,7 @@ package car
 import (
   "github.com/freeconf/yang/val"
   "github.com/freeconf/yang/node"
-  "github.com/freeconf/yang/nodes"
+  "github.com/freeconf/yang/nodeutil"
 )
 
 {{range .All}} 
@@ -35,7 +35,7 @@ type {{title .Meta.Ident}} struct {
 /*  {{title .Meta.Ident}}Node - Management of {{.Meta.Description}}
 */
 func {{title .Meta.Ident}}Node(o *{{title .Meta.Ident}}) node.Node {
-    return &nodes.Basic{
+    return &nodeutil.Basic{
 {{- if .Fields }}        
         OnField: func(r node.FieldRequest, hnd *node.ValueHandle) error {            
             switch r.Meta.Ident() {
@@ -97,7 +97,7 @@ func {{title .Meta.Ident}}Node(o *{{title .Meta.Ident}}) node.Node {
 
 {{range .Arrays}}
 func {{title .Meta.Ident}}ListNode(o []*{{title .Meta.Ident}}) node.Node {
-    return &nodes.Basic{
+    return &nodeutil.Basic{
         OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
             if r.Row < len(o) {
                 return {{title .Meta.Ident}}Node(o[r.Row]), nil, nil

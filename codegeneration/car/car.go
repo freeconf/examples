@@ -4,7 +4,7 @@ package car
 
 import (
 	"github.com/freeconf/yang/node"
-	"github.com/freeconf/yang/nodes"
+	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/val"
 )
 
@@ -44,7 +44,7 @@ type Tire struct {
 /*  CarNode - Management of Vehicle of sorts
  */
 func CarNode(o *Car) node.Node {
-	return &nodes.Basic{
+	return &nodeutil.Basic{
 		OnField: func(r node.FieldRequest, hnd *node.ValueHandle) error {
 			switch r.Meta.Ident() {
 			case "speed":
@@ -89,7 +89,7 @@ func CarNode(o *Car) node.Node {
 }
 
 func TireListNode(o []*Tire) node.Node {
-	return &nodes.Basic{
+	return &nodeutil.Basic{
 		OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
 			if r.Row < len(o) {
 				return TireNode(o[r.Row]), nil, nil
@@ -102,7 +102,7 @@ func TireListNode(o []*Tire) node.Node {
 /*  EngineNode - Management of powers the car
  */
 func EngineNode(o *Engine) node.Node {
-	return &nodes.Basic{
+	return &nodeutil.Basic{
 		OnChild: func(r node.ChildRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
 			case "specs":
@@ -118,7 +118,7 @@ func EngineNode(o *Engine) node.Node {
 /*  SpecsNode - Management of details about the car
  */
 func SpecsNode(o *Specs) node.Node {
-	return &nodes.Basic{
+	return &nodeutil.Basic{
 		OnField: func(r node.FieldRequest, hnd *node.ValueHandle) error {
 			switch r.Meta.Ident() {
 			case "horsepower":
@@ -132,7 +132,7 @@ func SpecsNode(o *Specs) node.Node {
 /*  TireNode - Management of rubber circular part that makes contact with road
  */
 func TireNode(o *Tire) node.Node {
-	return &nodes.Basic{
+	return &nodeutil.Basic{
 		OnField: func(r node.FieldRequest, hnd *node.ValueHandle) error {
 			switch r.Meta.Ident() {
 			case "pos":

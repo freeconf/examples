@@ -3,10 +3,10 @@ package car
 import (
 	"fmt"
 
-	"github.com/freeconf/yang/meta"
 	"github.com/freeconf/yang/node"
-	"github.com/freeconf/yang/nodes"
+	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/parser"
+	"github.com/freeconf/yang/source"
 )
 
 func Example_Car() {
@@ -18,9 +18,9 @@ func Example_Car() {
 			},
 		},
 	}
-	m := parser.RequireModule(meta.PathStreamSource(".."), "car")
+	m := parser.RequireModule(source.Dir(".."), "car")
 	b := node.NewBrowser(m, CarNode(c))
-	actual, err := nodes.WriteJSON(b.Root())
+	actual, err := nodeutil.WriteJSON(b.Root())
 	if err != nil {
 		panic(err)
 	}

@@ -1,0 +1,84 @@
+module slack-client {
+    prefix "c";
+    namespace "freeconf.org/slack-client";
+    description "Bridge to send notifications to the Slack chat service";
+    revision 0;
+
+    leaf apiToken {
+        description "API token required for communication with slack services";
+        type string;
+    }
+
+    leaf debug {
+        description "debug all request to console";
+        type boolean;        
+    }
+
+    leaf userToken {
+        description "User account to send messages on behalf of"; 
+        type string;
+    }
+
+    list sub {
+        description "subscriptions that will be relayed to slack";
+
+        key id;
+
+        leaf id {
+            description "unique identifier for thie subscription";
+            type string;
+        }
+
+        leaf enable {
+            description "disable this relay";
+            default true;
+            type boolean;
+        }
+
+        leaf active {
+            description "does the relay point to a valid path";
+            config false;
+            type boolean;
+        }
+        
+        leaf channel {
+            description "slack channel to send message";
+            type string;
+        }
+
+        leaf counter {
+            description "number of messages sent on thie relay";
+            type uint32;
+            config false;
+        }
+
+        leaf device {
+            description "when this is used in NMS, you can specifiy which device is of interest";
+            type string;
+        }
+
+        leaf module {
+            description "name of the module to subscribe to";
+            type string;
+        }
+
+        leaf path {
+            description "XPath to notification message to relay to slack";
+            type string;
+        }        
+
+        /* TODO: Add throttling params to keep subscription from flooding slack */
+    }
+
+    notification err {
+        description "there was error with a subscription either subscribing or sending to slack";
+        leaf subId {
+            type leafref {
+                path "../../sub/id";
+            }
+        }
+        leaf msg {
+            type string;
+        }
+    }
+}

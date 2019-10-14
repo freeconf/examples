@@ -15,8 +15,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/freeconf/yang/meta"
 	"github.com/freeconf/yang/parser"
+	"github.com/freeconf/yang/source"
 )
 
 func Example_main() {
@@ -25,7 +25,7 @@ func Example_main() {
 	templateName := "go_code.template"
 	outName := "car/car.go"
 
-	m := parser.RequireModule(meta.PathStreamSource(yangPath), moduleName)
+	m := parser.RequireModule(source.Path(yangPath), moduleName)
 
 	gen := &GoCodeGenerator{}
 	err := gen.Build(m)

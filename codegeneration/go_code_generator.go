@@ -8,7 +8,7 @@
 // or might translate into multiple things (i.e. choice)
 //
 // A lot of projects start off immediately with code generation and may benefit
-// from using just the built in node implemtations in github.com/freeeconf/yang/nodes
+// from using just the built in node implemtations in github.com/freeeconf/yang/nodeutil
 // like node.Reflect.
 //
 package codegeneration

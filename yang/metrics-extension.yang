@@ -1,0 +1,13 @@
+module metrics-extension {
+    prefix "m";
+    namespace "freeconf.org/metrics-extension";
+    description "Classify metrics into certain types so tools like Prometheus can handle them correctly";
+    revision 0000-00-00;
+    
+	extension metric {
+
+		argument "type" { 
+            description "Allowed values: gauge, counter, histogram and samples";
+        }
+	}
+}

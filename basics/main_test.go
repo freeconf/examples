@@ -6,7 +6,7 @@ import (
 
 	"github.com/freeconf/manage/device"
 	"github.com/freeconf/manage/restconf"
-	"github.com/freeconf/yang/meta"
+	"github.com/freeconf/yang/source"
 
 	"github.com/freeconf/examples/basics"
 )
@@ -20,7 +20,7 @@ func Example_main() {
 
 	// Where to looks for yang files, this tells library to use these
 	// two relative paths. This is just one of many ways to control loading yang files.
-	yangPath := meta.PathStreamSource(".:../yang")
+	yangPath := source.Path(".:../yang")
 
 	// A device is just a container of modules.  Modules are independent services inside
 	// your microservice.
