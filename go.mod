@@ -3,14 +3,15 @@ module github.com/freeconf/examples
 go 1.12
 
 require (
-	github.com/freeconf/bridge v0.0.0-20190910000341-add502dcae53
-	github.com/freeconf/restconf v0.0.0-20190928152552-c94a450e817a
-	github.com/freeconf/yang v0.0.0-20191004224936-946e09ffc9b4
-	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
+	github.com/freeconf/bridge v0.0.0-20200122224605-7aeaa06ed11b
+	github.com/freeconf/gconf v0.0.0-20180113115633-7483a40ddad9 // indirect
+	github.com/freeconf/restconf v0.0.0-20200122125951-25e0156fb002
+	github.com/freeconf/yang v0.0.0-20200122003835-a31e8a9b9760
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
 )
 
 // replace github.com/freeconf/yang => ../yang
 
-//replace github.com/freeconf/restconf => ../restconf
+// replace github.com/freeconf/restconf => ../restconf
 
 // replace github.com/freeconf/bridge => ../bridge
