@@ -34,7 +34,7 @@ type GoCodeGenerator struct {
 
 // objectRef is what will be struct in go
 type objectRef struct {
-	Meta      meta.HasDataDefs
+	Meta      meta.HasDataDefinitions
 	Objects   []*objectRef
 	Arrays    []*arrayRef
 	Fields    []*fieldRef
@@ -72,7 +72,7 @@ type eventRef struct {
 // Build does a single pass thru the YANG AST and assemble information into a format
 // that will be condusive to generating go code. Generally you pass in the *meta.Module
 // but you could pass in some section of a YANG tree instead.
-func (self *GoCodeGenerator) Build(m meta.HasDataDefs) error {
+func (self *GoCodeGenerator) Build(m meta.HasDataDefinitions) error {
 	main := &objectRef{
 		Meta: m,
 	}
@@ -98,11 +98,11 @@ func (self *GoCodeGenerator) build(p *objectRef) error {
 		}
 	}
 
-	for _, d := range p.Meta.DataDefs() {
+	for _, d := range p.Meta.DataDefinitions() {
 		if meta.IsList(d) {
 			ref := &arrayRef{
 				Meta: d.(*meta.List),
-				Item: &objectRef{Meta: d.(meta.HasDataDefs)},
+				Item: &objectRef{Meta: d.(meta.HasDataDefinitions)},
 			}
 			p.Arrays = append(p.Arrays, ref)
 			self.all = append(self.all, ref.Item)
@@ -116,7 +116,7 @@ func (self *GoCodeGenerator) build(p *objectRef) error {
 			p.Fields = append(p.Fields, ref)
 		} else {
 			ref := &objectRef{
-				Meta: d.(meta.HasDataDefs),
+				Meta: d.(meta.HasDataDefinitions),
 			}
 			p.Objects = append(p.Objects, ref)
 			self.all = append(self.all, ref)
