@@ -1,9 +1,6 @@
 package basics
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/val"
@@ -29,12 +26,10 @@ func Manage(c *Car) node.Node {
 			case "specs":
 				// knows how to r/w config from a map
 				return nodeutil.ReflectChild(c.Specs), nil
-			default:
-				// return control back to handler we're extending, in this case
-				// it's reflection
-				return p.Child(r)
 			}
-			return nil, nil
+			// return control back to handler we're extending, in this case
+			// it's reflection
+			return p.Child(r)
 		},
 
 		// Functions
@@ -90,40 +85,44 @@ func Manage(c *Car) node.Node {
 func tiresNode(c *Car) node.Node {
 	return &nodeutil.Basic{
 		// Handling lists are
-		OnNext: func(r node.ListRequest) (node.Node, []val.Value, error) {
+		OnNextItem: func(r node.ListRequest) nodeutil.BasicNextItem {
 			var t *tire
-			key := r.Key
-
-			// request for specific item in list
-			if key != nil {
-				if r.New {
-					nextPos := len(c.Tire)
-					if key[0].Value().(int) != nextPos {
-						msg := fmt.Sprintf("pos must be next sequential value %d", nextPos)
-						return nil, nil, errors.New(msg)
+			return nodeutil.BasicNextItem{
+				GetByKey: func() error {
+					if pos := r.Key[0].Value().(int); pos < len(c.Tire) {
+						t = c.Tire[pos]
 					}
+					return nil
+				},
+				GetByRow: func() ([]val.Value, error) {
+					if r.Row >= len(c.Tire) {
+						return nil, nil
+					}
+					t = c.Tire[r.Row]
+					key := []val.Value{val.Int32(r.Row)}
+					return key, nil
+				},
+				New: func() error {
+					nextPos := len(c.Tire)
 					t = &tire{
 						Pos: nextPos,
 					}
 					c.Tire = append(c.Tire, t)
-				} else {
-					pos := key[0].Value().(int)
-					if pos >= len(c.Tire) {
-						return nil, nil, nil
+					return nil
+				},
+				DeleteByKey: func() error {
+					if pos := r.Key[0].Value().(int); pos < len(c.Tire) {
+						c.Tire = append(c.Tire[0:pos], c.Tire[pos+1:]...) //splice
 					}
-					t = c.Tire[pos]
-				}
-			} else {
-				// request for nth item in list
-				if r.Row < len(c.Tire) {
-					t = c.Tire[r.Row]
-					key = []val.Value{val.Int32(r.Row)}
-				}
+					return nil
+				},
+				Node: func() (node.Node, error) {
+					if t != nil {
+						return tireNode(t), nil
+					}
+					return nil, nil
+				},
 			}
-			if t != nil {
-				return tireNode(t), key, nil
-			}
-			return nil, nil, nil
 		},
 	}
 }

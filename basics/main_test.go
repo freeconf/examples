@@ -12,6 +12,8 @@ import (
 )
 
 func Example_main() {
+	//restconf.Compliance = restconf.Simplified
+
 	// This is an example for a main() body to configure a typical application, in
 	// this case a car.
 
