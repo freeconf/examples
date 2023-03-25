@@ -3,7 +3,6 @@ package car
 import (
 	"fmt"
 
-	"github.com/freeconf/yang"
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/parser"
@@ -11,11 +10,10 @@ import (
 )
 
 func Example_Car() {
-	yang.Compliance = yang.Simplified
 	c := &Car{
 		Speed: 10,
 		Tire: []*Tire{
-			&Tire{
+			{
 				Size: "H15",
 			},
 		},

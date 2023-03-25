@@ -1,5 +1,9 @@
 github.com/freeconf/restconf v0.0.0-20230316224557-eb37bd106540 h1:QeriEhgBAj5yqyMmwCRnDRu3jhZ+k+CJ4IlNP1weEho=
 github.com/freeconf/restconf v0.0.0-20230316224557-eb37bd106540/go.mod h1:bLq6RKpAYL+1l1SoMOExcB40kVhlWUGdGww2Ppz8XfY=
+github.com/freeconf/restconf v0.0.0-20230325123108-f8e243b22ea0 h1:ssm0Xi4ik74HCSMpoUnnK6sclf3EGGv7SIBP5+FM9q4=
+github.com/freeconf/restconf v0.0.0-20230325123108-f8e243b22ea0/go.mod h1:XuG9rjQDbiH25ZDXUHoaD4qzunx/Lb0F3ceK3HMsvr0=
 github.com/freeconf/yang v0.0.0-20221224114829-8bd2e7016006/go.mod h1:qO7//xe0xJtDQiD0eO2cdpkiVpsOP9Q9Nnm8XX5D0uo=
 github.com/freeconf/yang v0.0.0-20230314135910-5342888a518d h1:f+zQRinfmo1dtpYMDYuAWoWk2DweinioogbJkbr+F7Y=
 github.com/freeconf/yang v0.0.0-20230314135910-5342888a518d/go.mod h1:qO7//xe0xJtDQiD0eO2cdpkiVpsOP9Q9Nnm8XX5D0uo=
+github.com/freeconf/yang v0.0.0-20230324235123-ccfffc97f531 h1:suO9AzWlXdldKcMOwULxHwj214Q8F0wCSwuD0epDLyk=
+github.com/freeconf/yang v0.0.0-20230324235123-ccfffc97f531/go.mod h1:mWEJ47bQKL2+1uMaHsA6VjRtoO+svJ2LcIiN+StJqNY=
