@@ -1,0 +1,31 @@
+module fc-gnmi {
+	namespace "org.freeconf";
+	prefix "gnmi";
+
+    import fc-stocklib {
+        prefix "stock";
+    }
+    
+    description "service that implements RESTCONF RFC8040 device protocol";
+	revision 2023-03-31;
+
+	leaf debug {
+	    description "enable debug log messages";
+        type boolean;
+	    default "false";
+    }
+
+    container web {
+        description "web service used by restconf server";
+
+        leaf port {
+            description "required port number.  Examples :8010  192.168.1.10:8080";
+            type string;
+        }
+
+        container tls {
+            description "required for secure transport";
+            uses stock:tls;
+        }
+    }
+}
