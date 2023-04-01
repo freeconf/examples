@@ -1,0 +1,42 @@
+---
+title: Node/Basic
+weight: 30
+tags:
+  - go
+  - server
+  - node
+description: >
+  Building Go nodes by using abstract class
+---
+
+## Use cases:
+* high-level routing areas
+* `list` nodes
+* areas with not a lot of CRUD
+* bridges to systems that are not Go structs (e.g. DB, YAML, external REST APIs, etc.)
+* part of code generation
+
+## Highlevel routing
+
+**Go Code**
+```go
+[[ cp "app.go" ]]
+```
+
+**YANG**
+```
+[[ cp "my-app.yang" ]]
+```
+
+**...then your node code can be this.**
+```go
+[[ cp "manage.go" ]]
+```
+
+You cannot use `Reflect` here because fields are private.
+
+### Additional Files
+file: `manage_test.go`
+```go
+[[ cp "manage_test.go" ]]
+```

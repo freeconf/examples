@@ -1,0 +1,22 @@
+module contacts {
+    
+    namespace "freeconf.org";
+    prefix "a";
+
+    container me {
+        // full-name, full_name or fullName all work
+        leaf full-name {
+            type string;
+        }
+    }
+    list users {
+        key full-name;
+        // could be grouping/uses here, doesn't matter
+        leaf full-name {
+            type string;
+        }
+    }
+    leaf size {
+        type int32;
+    }
+}

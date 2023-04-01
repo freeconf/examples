@@ -1,0 +1,11 @@
+module bear {
+    namespace "freeconf.org";
+    prefix "b";
+
+    list cub {
+        key name;
+        leaf name {
+            type string;
+        }
+    }
+}

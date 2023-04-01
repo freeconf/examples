@@ -1,0 +1,16 @@
+---
+title: Unit Testing
+weight: 101
+description: >
+  Strategies unit testing management `nodes`
+---
+
+You don't need any special utilities to unit test your management, just a few useful techniques.  If you look thru a lot of the [node implementations](/tags/node/) you'll see a lot of unit tests exibiting how to test nodes.
+
+## Testing without full application
+
+As your application, management and YANG file grow, loading the full application each time just to test a piece might become cumbersome. We can use a feature of YANG to import from another YANG file and FreeCONF's ability to make this easy to test just our unit.
+
+```go
+[[ cp "deep_test.go" ]]
+```

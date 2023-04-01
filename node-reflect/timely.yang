@@ -1,0 +1,8 @@
+module timely {
+    namespace "freeconf.org";
+    prefix "t";
+    
+    leaf lastModified {        
+        type int64; // unix seconds
+    }
+}

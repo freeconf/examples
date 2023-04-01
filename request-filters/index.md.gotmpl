@@ -1,0 +1,25 @@
+---
+title: "Request filters"
+weight: 1000
+description: >
+  How to register web request filters to read custom request headers
+  and how to relay that information to your nodes.
+---
+
+## RESTCONF HTTP request access
+
+This is useful for custom authorization or general need to access the HTTP request information
+
+**Steps:**
+
+1.) Register a request [`restconf.RequestFilter`](https://pkg.go.dev/github.com/freeconf/restconf#RequestFilter) with RESTCONF [`restconf.Server`](https://pkg.go.dev/github.com/freeconf/restconf#Server) instance
+
+2.) Filter returns a `context.Context` that contains any custom data that you might extract from the HTTP request like HTTP header information, URL parameters or certificate information.
+
+3.) Values from that context.Context will be made available to all your [`node.Node`](https://pkg.go.dev/github.com/freeconf/yang/node#Node) implementations
+
+Example Code:
+
+```go
+[[ cp "request_access_test.go" ]]
+```

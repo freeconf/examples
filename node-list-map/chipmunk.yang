@@ -1,0 +1,12 @@
+module chipmunk {
+	namespace "freeconf.org";
+	prefix "c";
+
+	list friends {
+		key name;
+		
+		leaf name {
+			type string;
+		}
+	}
+}

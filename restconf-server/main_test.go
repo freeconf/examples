@@ -9,7 +9,7 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	p := exec.Command("go", "run", "main.go", "-test=true")
+	p := exec.Command("go", "run", ".", "-test=true")
 	p.Stderr = os.Stderr
 	p.Stdout = os.Stdout
 	fc.AssertEqual(t, nil, p.Run())

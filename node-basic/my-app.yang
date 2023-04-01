@@ -1,0 +1,14 @@
+module my-app {
+    namespace "freeconf.org";
+    prefix "a";
+
+    container users {
+        // ... more stuff here
+    }
+    container fonts {
+        // ... more stuff here
+    }
+    container bagels {
+        // ... more stuff here
+    }
+}

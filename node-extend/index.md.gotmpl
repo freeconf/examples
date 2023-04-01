@@ -1,0 +1,39 @@
+---
+title: Node/Extend
+weight: 32
+tags:
+  - go
+  - server
+  - node
+description: >
+  When you want to make adjustments to an existing node's implementation
+---
+
+## Use cases:
+* Few isolated changes to an existing node
+* Wrap a CRUD node but customize editing operations, actions or notifications
+
+## Special notes
+* If [`Reflect`]({ { < relref "reflect" > } } ) was a cake and [`Basic`]({ { < relref "basic" > } } ) was the plate under the cake, then `Extend` would be the frosting.
+* `Extend` is exactly like `Basic` but let's you delegate anything to another node.  So most of `Basic's` documentation also applies here.
+
+## `Reflect` with one exception
+
+```go
+[[ cp "bird.go" ]]
+```
+
+```
+[[ cp "bird.yang" ]]
+```
+
+```go
+[[ cp "manage.go" ]]
+```
+
+### Addition Files
+
+file: `manage_test.go`
+```go
+[[ cp "manage_test.go" ]]
+```

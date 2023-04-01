@@ -1,0 +1,39 @@
+---
+title: Node/maps
+tags:
+  - go
+  - restconf
+  - server
+  - node
+weight: 36  
+description: >
+  Mapping a Go `map[string]*Friend` to a YANG `list`
+---
+
+Handing YANG `lists` are bit more complex then handling YANG `containers`.  As usual, FreeCONF imposes no limits on you regarding how to iterate your list.
+
+## Use Cases
+* A map of Go structures that are editable.
+
+[Full Source](https://github.com/freeconf/examples/node-list-map)
+
+file: `chipmunk.yang`
+```
+[[ cp "chipmunk.yang" ]]
+```
+
+```go
+[[ cp "manage.go" ]]
+```
+
+## Additional Source
+
+file: `chipmunk.go`
+```go
+[[ cp "chipmunk.go" ]]
+```
+
+file: `manage_test.go`
+```go
+[[ cp "manage_test.go" ]]
+```

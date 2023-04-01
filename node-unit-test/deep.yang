@@ -1,0 +1,14 @@
+module deep {
+
+    container inside {
+        container something {
+            uses here;
+        }
+    }
+
+    grouping here {
+        leaf penny {
+            type int32;
+        }
+    }
+}

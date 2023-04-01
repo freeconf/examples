@@ -1,0 +1,100 @@
+---
+title: Node/Reflect
+weight: 1
+tags:
+  - node
+  - go
+weight: 31
+description: >
+  When your application objects and field names mostly align with your YANG model
+---
+
+## Use cases: 
+* CRUD on Go structs
+* CRUD on Go maps or slices
+
+## Special notes
+* You don't need perfect alignment with Go field names and YANG to use `Reflect`. Let `Reflect` do the heavy lifting for you and capture small variations by combining with [Extend]({{< relref "../node-extend" >}}).  To that end, do not expect magical powers from `Reflect` to coerse your custom field types to YANG types.
+* Currently `Reflect` doesn't attempt to use reflection to implement `notifications` or `actions/rpcs` but again, you can combine `Reflect` with `Extend`.
+* Names in YANG can be `camelCase`, `kabob-case` or `snake_case` interchangablely. Your Go public field are obviously in `CamelCase`.
+
+## Simple example
+
+When you happen to have perfect alignment of field names to names in YANG.
+
+**If you have application code like this...**
+```go
+[[ cp "contacts.go" ]]
+```
+
+**...and YANG like this...**
+```
+[[ cp "contacts.yang" ]]
+```
+
+**...then your node code can be this.**
+```go
+[[ cp "manage_contacts.go" ]]
+```
+
+**...and you test like this.**
+```go
+[[ cp "manage_contacts_test.go" ]]
+```
+
+
+## Map example
+
+Reflect also supports Go's `map` interface. While this Go code's lack of data structures that might make this difficult to use in Go, if you don't need to handle this data in Go, then this is completely acceptable.  Remember, you can add constraints to yang to ensure the data is validated properly.  
+
+**If you have application code like this...**
+```go
+[[ cp "junk_drawer.go" ]]
+```
+||
+**...and YANG like this...**
+```
+[[ cp "junk-drawer.yang" ]]
+```
+
+**...then your node code can be this.**
+```go
+[[ cp "manage_junk.go" ]]
+```
+
+**...and you test like this.**
+```go
+[[ cp "manage_junk_test.go" ]]
+```
+
+**tips:** 
+* useful for building validated RESTCONF APIs quickly to be filled in later with structs
+* good for handling a bulk set of configs
+
+## Field coersion
+
+Reflect can do a decent job converting Go primatives to and from YANG leaf types: strings to numbers, numbers to enums, enums to strings, number types to other number types, etc..  If a conversion represents a loss of data or a type can cannot be convert safely, then an error is returned.  To handle the conversion of these values yourself, you can use `Extend` or `Reflect.OnField` .  `Reflect.OnField` is more suited over `Extend` when have a lot of fields of the same type that you want to reuse in a lot of places and not one-offs.
+
+**If you have application code like this...**
+```go
+[[ cp "timely.go" ]]
+```
+**...and YANG like this...**
+```
+[[ cp "timely.yang" ]]
+```
+
+
+**...then your node code can be this.**
+```go
+[[ cp "manage_timely.go" ]]
+```
+
+## Adhoc structs
+
+Create an anonymous struct or a just a map.  Useful for handing RPC requests or responses. Here we use it to create whole app.
+
+```go
+[[ cp "manage_mystery_test.go" ]]
+```
+

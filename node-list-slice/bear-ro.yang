@@ -1,0 +1,12 @@
+module bear-ro {
+    namespace "freeconf.org";
+    prefix "b";
+
+    list cub {
+        key name;
+        config false;
+        leaf name {
+            type string;
+        }
+    }
+}

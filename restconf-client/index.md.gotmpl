@@ -1,0 +1,26 @@
+---
+title: RESTCONF client
+weight: 11
+tags:
+  - client
+  - go
+  - restconf
+  - json
+description: >
+  Connecting to a RESTCONF server
+---
+
+While you can easily interact with a RESTCONF server using any HTTP library, using a RESTCONF client can have advantages.  In particular it will let you walk a server and access the meta in the YANG alongside the data. FreeCONF gives you a client API that is similar to server API once you are connected.
+
+
+```go
+[[ cp "client.go" ]]
+```
+
+### Additional Files
+
+file: `client_test.go`
+```go
+[[ cp "client_test.go" ]]
+```
+

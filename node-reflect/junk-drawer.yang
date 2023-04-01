@@ -1,0 +1,21 @@
+module junk-drawer {
+    container info {
+        leaf name {
+            type string;
+        }
+        container more {
+            leaf size {
+                type decimal64;
+            }
+        }
+        list stuff {
+            key anything;
+            leaf anything {
+                type enumeration {
+                    enum one;
+                    enum two;
+                }
+            }
+        }
+    }
+}

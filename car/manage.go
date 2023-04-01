@@ -6,17 +6,12 @@ import (
 	"github.com/freeconf/yang/val"
 )
 
-// Useful (but not required) technique to organize management functions into
-// a namespace. Generally all state is kept in app.
-type manage struct{}
-
 /////////////////////////
 // C A R    M A N A G E M E N T
 //  Bridge from model to car app.
 
 // Manage is root handler from car.yang. i.e. module car { ... }
 func Manage(c *Car) node.Node {
-	var m manage
 
 	// Powerful combination, we're letting reflect do a lot of the CRUD
 	// when the yang file matches the field names.  But we extend reflection
@@ -28,7 +23,7 @@ func Manage(c *Car) node.Node {
 		OnChild: func(p node.Node, r node.ChildRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
 			case "tire":
-				return m.tires(c.Tire), nil
+				return manageTires(c.Tire), nil
 			default:
 				// delegate back to "Base" handler should there be any default
 				// handling
@@ -86,7 +81,7 @@ func Manage(c *Car) node.Node {
 // tiresNode handles list of tires.
 //
 //	list tire { ... }
-func (m manage) tires(tires []*Tire) node.Node {
+func manageTires(tires []*Tire) node.Node {
 	return &nodeutil.Basic{
 		OnNextItem: func(r node.ListRequest) nodeutil.BasicNextItem {
 			var t *Tire
@@ -109,7 +104,7 @@ func (m manage) tires(tires []*Tire) node.Node {
 				Node: func() (node.Node, error) {
 					if t != nil {
 						// let reflection do a lot of the work
-						return m.tire(t), nil
+						return ManageTire(t), nil
 					}
 					return nil, nil
 				},
@@ -119,7 +114,7 @@ func (m manage) tires(tires []*Tire) node.Node {
 }
 
 // TireNode handles each tire node.  Everything *inside* list tire { ...}
-func (m manage) tire(t *Tire) node.Node {
+func ManageTire(t *Tire) node.Node {
 	// let reflection do a lot of the work
 	return &nodeutil.Extend{
 		Base: nodeutil.ReflectChild(t),
