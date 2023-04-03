@@ -13,5 +13,5 @@ YANG has a type called `anydata` which can be anything.  Reflect's default behav
 * `map[string]interface{}`  - When given loose data
 * `decimal64` - when a number
 * `string` - when given a string
-* `io.Reader` - when given a file uploaded thru `form` mime type. See [Forms]({{< relref "../../reference/web-ui/#form-processingfile-uploads" >}})
+* `io.Reader` - when given a file uploaded thru `form` mime type. See [Forms]({{< relref "../webui/#form-processingfile-uploads" >}})
 

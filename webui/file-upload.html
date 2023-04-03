@@ -1,0 +1,22 @@
+<html><!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Book Report Upload</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    </head>
+
+    <body>
+        <table>
+            <tr>
+                <td><label for="bookName">Book Name:</label></td>
+                <td><input id="bookName"></td>
+            </tr>
+        
+            <tr>
+                <td><label for="pdf">Upload:</label></td>
+                <td><input type="file" id="pdf" onchange='upload()'></td>
+            </tr>
+        </table>
+        <script src="/ui/file-upload.js"></script>
+    </body>
+</html>

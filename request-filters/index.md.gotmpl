@@ -1,6 +1,6 @@
 ---
 title: "Request filters"
-weight: 1000
+weight: 1001
 description: >
   How to register web request filters to read custom request headers
   and how to relay that information to your nodes.

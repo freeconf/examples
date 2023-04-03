@@ -102,7 +102,7 @@ func (c *Car) Start() {
 
 					for _, t := range c.Tire {
 
-						t.endureMileage()
+						t.endureMileage(c.Speed)
 
 						if t.Flat {
 							c.updateListeners(flatTire)
@@ -171,9 +171,9 @@ func (t *Tire) checkIfFlat() {
 	}
 }
 
-func (t *Tire) endureMileage() {
+func (t *Tire) endureMileage(speed int) {
 	// Wear down [0.0 - 0.5] of each tire proportionally to the tire position
-	t.Wear -= float64(t.Pos) * (rand.Float64() / 2)
+	t.Wear -= (float64(speed) / 100) * float64(t.Pos) * rand.Float64()
 	t.checkIfFlat()
 	t.checkForWear()
 }
@@ -201,7 +201,7 @@ type listSubscription struct {
 }
 
 // Close will unsubscribe to events.
-func (self *listSubscription) Close() error {
-	self.l.Remove(self.e)
+func (sub *listSubscription) Close() error {
+	sub.l.Remove(sub.e)
 	return nil
 }

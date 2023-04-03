@@ -1,0 +1,23 @@
+module file-upload {
+    namespace "freeconf.org";
+    prefix "f";
+
+    rpc bookReport {
+        input {
+            leaf bookName {
+                description "Name of the book";
+                type string;
+            }
+
+            anydata pdf {
+                description "PDF of file upload";
+            }
+        }
+        output {
+            leaf fileSize {
+                description "";
+                type uint64;
+            }
+        }
+    }
+}

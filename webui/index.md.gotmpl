@@ -1,0 +1,98 @@
+---
+title: Web UIs
+weight: 1000
+tags:
+  - server
+  - restconf
+  - web
+description: >
+  Building a Web UI interface to a RESTCONF implementation is pure joy.
+  This is a few tips that will serve you well.
+---
+
+While automation is primarily about APIs, building administration portals enable non-developers to interact with your application and another point of access for developers.
+
+## Car Admin Portal
+
+### Notes:
+* This example web code is very basic, but you can use advanced web frameworks
+* Read [how to use RESTCONF API]({{< relref "../../reference/interfacing-with-a-restconf-api" >}}) to understand how to navigate data. 
+* Serving your web interface with your application ensures they are always deployed together and therefore compatible.
+
+![Car Demo](images/screenshot.png)
+
+```javascript
+[[ cp "app.js" ]]
+```
+
+```html
+[[ cp "index.html" ]]
+```
+
+### Additional Notes:
+
+* **Register custom request endpoints** - Not everything has to be handled thru RESTCONF. Use standard web request handlers for any custom endpoints.
+* **Use `notification` for interactive UIs** - Notifications aren't just for alerts. One of the more useful notifications is for data has changed in back-end from possibly another user edit and front-end should reload data
+* **Consider a web-only module** - You can serve any number of modules in an application should you need to isolate your web-only functions.  For example `car` module and `car-web` module both from the same server.
+* **Generate REST API Docs**  - [Generate REST API docs]({{< relref "../../reference/docs" >}}) to know what is available from REST.
+   ![Car Demo](images/rest-api-html.png)
+
+```sh
+[[ cp "gen-api-docs.sh" ]]
+```
+
+## File Uploading
+
+![File Upload](images/file-upload.png)
+
+```yang
+[[ cp "file-upload.yang" ]]
+```
+
+## Frontend
+
+```html
+[[ cp "file-upload.html" ]]
+```
+
+```javascript
+[[ cp "file-upload.js" ]]
+```
+
+## Backend
+
+Go will see the `anydata` as an `io.Reader`.
+
+```go
+[[ cp "file-upload.go" ]]
+```
+
+## Model Driven UI
+
+Being able to read the information in the YANG file from your web application is nothing short of game changing. Here are **just a few of the possibilities**: 
+1. client-side form validation
+2. build forms dynamically including simple things like select list options from leaf enumerations
+4. form labels from leaf names and tooltips from descriptions
+5. list of available columns in a table
+6. reports
+
+Combine this with ability to extend the YANG with your own meta data the **possibilites are endless**. For example:
+1. mark `leafs` as password fields
+2. marking fields that require web custom handlers
+3. fields that should be shown to advanced users
+4. fields that should only show if feature flag is on
+
+The path to the meta definitions is just `/restconf/schema/{module}/` and requires header `Accept: application/json` to return the YANG file in JSON form.  You can use all normal RESTCONF navigation features to drill in to the just the part of the YANG file you are interested in.
+
+![File Upload](images/model-driven-rest.png)
+
+
+![File Upload](images/model-driven.png)
+
+```html
+[[ cp "model-driven.html" ]]
+```
+
+```javascript
+[[ cp "model-driven.js" ]]
+```
