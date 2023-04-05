@@ -10,8 +10,29 @@ description: >
   Adding gNMI server-side support to your application
 ---
 
+[gNMI](https://www.openconfig.net/docs/gnmi/gnmi-specification/) is a alternative communication protocol to RESTCONF by openconfig.net](https://www.openconfig.net). You might use gNMI over RESTCONF because the services you want to use work with gNMI. With FreeCONF you can easily enable RESTCONF, gNMI or both at the same time.
+
+## How to add gNMI server support to your application
+
 file: `main.go`
 ```go
 [[ cp "main.go" ]]
 ```
 
+## To run this example
+
+```bash
+git clone https://github.com/freeconf/examples fc-examples
+cd ./gnmi-server
+go run .
+```
+
+Checkout [FreeCONF gNMIc examples]({{< relref "../openconfig-gnmic" >}}) for interacting with this running service.
+
+## To add gNMI support to your Go application
+
+Just add the Go dependency and setup for `gnmi.NewServer` where ever makes sense to your application.
+
+```bash
+go get github.com/freeconf/gnmi
+```

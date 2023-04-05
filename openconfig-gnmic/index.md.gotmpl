@@ -9,23 +9,44 @@ description: >
   Using the gNMIc client to connect to your application  
 ---
 
-gNMIc is a utility that can connect to any appliction that supports gNMI. Here are some working examples of using `gnmic` to connect to the car example application.
+[gNMIc](https://gnmic.openconfig.net/) is a utility that can connect to any appliction that supports gNMI protocol including applications [using the FreeCONF library]({{< relref "../gnmi-server" >}}). You can use `gnmic` from the terminal or use it to [send metrics to InfluxDB, Prometheus, Kafka, NATS](https://gnmic.openconfig.net/user_guide/outputs/output_intro/) and possibly others.
+
+Here are some working examples of using `gnmic` from terminal to connect to the car example application.
+
+## FreeCONF examples source code
+
+Get the FreeCONF example code
+
+```bash
+git clone https://github.com/freeconf/examples fc-examples
+```
 
 ## Setup
 
-1. [Install gNMIc]()
-2. Run gNMI server
+1. [Install the gNMIc](https://gnmic.openconfig.net/#installation) client executable
+2. Run gNMI server with car application registered with server
 ```bash
-cd ../gnmi-server
+cd ./gnmi-server
 go run .
 ```
 
-file: `car.yml`
-```yaml
-[[ cp "car.yml" ]]
+## Using gnmic
+
+In a separate terminal, go to the directory containing gnmic commands.
+
+```bash
+cd openconfig-gnmi
 ```
 
-Command: `gnmic --config car.yml --model car --path ""`
+## Example commands
+
+```sh
+[[ cp "test-commands.sh" ]]
+```
+
+## Example Output
+
+Command: `gnmic --config car.yml --model car --path /`
 ```json
 [
   {
@@ -77,8 +98,4 @@ Command: `gnmic --config car.yml --model car --path ""`
     ]
   }
 ]
-```
-
-```sh
-[[ cp "test-commands.sh" ]]
 ```
