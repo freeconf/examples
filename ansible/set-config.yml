@@ -1,0 +1,16 @@
+---
+- name: configure
+  hosts: car
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: change speed
+    uri:
+      url: "http://{{ ansible_host }}:{{ http_port }}/restconf/data/car:"
+      method: PATCH
+      body_format: json
+      body: |
+        {
+            "speed":10
+        }

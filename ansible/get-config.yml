@@ -1,0 +1,14 @@
+---
+- name: get configure
+  hosts: car
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: get current speed
+    uri:
+      url: "http://{{ ansible_host }}:{{ http_port }}/restconf/data/car:?depth=1"
+    register: results
+
+  - debug:
+      var: results.json

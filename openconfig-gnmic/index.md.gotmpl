@@ -9,42 +9,38 @@ description: >
   Using the gNMIc client to connect to your application  
 ---
 
-[gNMIc](https://gnmic.openconfig.net/) is a utility that can connect to any appliction that supports gNMI protocol including applications [using the FreeCONF library]({{< relref "../gnmi-server" >}}). You can use `gnmic` from the terminal or use it to [send metrics to InfluxDB, Prometheus, Kafka, NATS](https://gnmic.openconfig.net/user_guide/outputs/output_intro/) and possibly others.
+[gNMIc](https://gnmic.openconfig.net/) is a utility that can connect to any appliction that supports gNMI protocol including applications. See [how to add gNMI support to your application using the FreeCONF]({{< relref "../gnmi-server" >}}). `gnmic` is unique because you can use it from the terminal to diagnose issues or use it in production to [send metrics to InfluxDB, Prometheus, Kafka, NATS](https://gnmic.openconfig.net/user_guide/outputs/output_intro/).
 
-Here are some working examples of using `gnmic` from terminal to connect to the car example application.
-
-## FreeCONF examples source code
-
-Get the FreeCONF example code
-
-```bash
-git clone https://github.com/freeconf/examples fc-examples
-```
+Here are some working examples of using `gnmic` from terminal to connect to the car example application with gnmi server support added.
 
 ## Setup
 
-1. [Install the gNMIc](https://gnmic.openconfig.net/#installation) client executable
-2. Run gNMI server with car application registered with server
+{{< readfile file="/content/en/docs/Examples/common/get-example-source.md" >}}
+
+### Setup gnmi server 
+
+Run the example gNMI server with car application registered with server
+
 ```bash
 cd ./gnmi-server
 go run .
 ```
 
-## Using gnmic
+## Running gnmic
 
-In a separate terminal, go to the directory containing gnmic commands.
+First [Install the gNMIc](https://gnmic.openconfig.net/#installation) client executable.  Then, in a separate terminal, go to the directory containing gnmic commands.
 
 ```bash
 cd openconfig-gnmi
 ```
 
-## Example commands
+### Example commands
 
 ```sh
 [[ cp "test-commands.sh" ]]
 ```
 
-## Example Output
+### Example Output
 
 Command: `gnmic --config car.yml --model car --path /`
 ```json

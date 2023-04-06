@@ -1,0 +1,7 @@
+---
+- name: Car
+  hosts: car
+  connection: httpapi
+  gather_facts: False
+  roles:
+    - car

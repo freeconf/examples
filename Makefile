@@ -9,7 +9,7 @@ SITE_DOCS = $(foreach F,$(SITE_DOCS_SRC),$(SITE_EXAMPLE_DIR)/$(dir $(F))$(basena
 # Generate the freeconf.org site example docs from templates from here
 docs: $(SITE_DOCS) doc-images
 
-$(SITE_DOCS) : $(SITE_EXAMPLE_DIR)/% : %.gotmpl ./site-docs/main.go $$(shell find $$(dir $$*) -type f)
+$(SITE_DOCS) : $(SITE_EXAMPLE_DIR)/% : %.gotmpl ./site-docs/main.go $$(shell find $$(dir $$*) -path '*/venv' -prune -type f)
 	test -d $(dir $@) || mkdir -p $(dir $@)
 	go run ./site-docs/main.go $< > $@
 

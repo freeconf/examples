@@ -1,0 +1,11 @@
+---
+- name: rpc
+  hosts: car
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: replace tires
+    uri:
+      url: "http://{{ ansible_host }}:{{ http_port }}/restconf/data/car:replaceTires"
+      method: POST
