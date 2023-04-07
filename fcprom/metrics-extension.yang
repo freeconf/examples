@@ -1,0 +1,18 @@
+module metrics-extension {
+    prefix "m";
+    namespace "freeconf.org";
+    description "Classify metrics into certain types so tools like Prometheus can handle them correctly";
+    revision 0000-00-00;
+    
+	extension gauge {
+        description "a value that goes up and down.  this is the default type if not specfied";
+	}
+
+	extension counter {
+        description "a value that only goes up and is always positive.  Roll over is normal as well as reset on restart";
+	}
+
+    extension multivariate {
+        description "one or more fields (from same node) to use values as label in metric report";
+    }
+}

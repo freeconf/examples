@@ -1,0 +1,86 @@
+---
+title: Prometheus
+weight: 26
+tags:
+ - server
+ - metrics
+ - integration
+description: >
+  Sending metrics to Prometheus
+---
+
+You have a few options for integrating your metrics with Prometheus.  You can use [gNMIc]({{< relref "../openconfig-gnmic" >}}) or `freeconf/example/fcprom` module. This document explores the later.
+
+![gNMIc prompt](images/car_tire_wear.png)
+
+## Demonstrates:
+
+* How to use export application metrics to Prometheus
+* How to use YANG extensions to improve to Prometheus results
+* Decoupling your application from Prometheus
+
+## Details
+
+The `fcprom` module auto-discovers all metrics from your application.  Just add the `fcprom.Bridge` service to your `Device` and you're off and running.
+
+The important point is not the time saving but that your application is not restricted to Prometheus.  So you can use Prometheus in development and something else in production or vice versa.  Prometheus comes with an integrated UI and time series DB making it the perfect developer tool.
+
+## How it works
+
+The `fcprom.Bridge` walks thru each `Browser` in the local `Device` browing the YANG for metrics (i.e. `config false`) to build the Prometheus `/metrics` endpoint generating labels and descriptions from the YANG. Because YANG doesn't understand Prometheus' metrics types like `gauge` or `counter` or know how you want to flatten metrics in YANG `lists`, the `fcprom` module  uses YANG extensions to help translate. YANG extensions are ignored by other systems.
+
+### Defining some extensions
+
+```YANG
+[[ cp "metrics-extension.yang" ]]
+```
+
+### Using our extensions
+
+```YANG
+[[ cp "car.yang" ]]
+```
+
+## Running the example
+
+{{< readfile file="/content/en/docs/Examples/common/get-example-source.md" >}}
+
+## Setup and Run Prometheues
+
+1.) [Download and install Prometheus](https://prometheus.io/docs/introduction/first_steps/)/
+
+2.) Start Prometheus with the example configuration here.
+
+```bash
+cd fcprom
+prometheus --config.file=prometheus.yml
+```
+
+file:prometheus.yml
+```yaml
+[[ cp "prometheus.yml" ]]
+```
+
+## Running Application
+
+```bash
+cd fcprom/cmd
+go run .
+```
+
+### Render Graph
+
+Go to [http://localhost:9090/](http://localhost:9090/) and enter `car_tire_wear` as expression
+
+## Using `fcprom` in your applications
+
+```go
+[[ cp "cmd/main.go" ]]
+```
+
+While you could import `fcprom` into your application directly by calling `go get github.com/freeconf/example` this example code may change without notice.
+
+## Tips for extending:
+*  With less than 400 lines of code we can integrate all modules with Prometheus. This would make a good starter for a project for someone until Prometheus understands either RESTCONF or gNMI natively.
+* If you wanted to integrate the Prometheus module into a remote module, the [FreeCONF remote client browser API]({{< relref "../restconf-client" >}}) looks identical to the local browser API and so this code could easily be extended to be remotely pull metrics from applications and not have to expose `/metrics` endpoint.
+* It's likely you can come up with more extensions like `metrics:ignore` to skip data or `metrics:label` to override the default label.

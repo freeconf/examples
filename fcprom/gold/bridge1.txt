@@ -1,0 +1,12 @@
+# HELP x_c int32 counter
+# TYPE x_c counter
+x_c 99
+# TYPE x_f_g gauge
+x_f_g {a="0",b="0"} 99
+x_f_g {a="1",b="10"} 99
+# HELP x_g int32 gauge with multi-line description
+# TYPE x_g gauge
+x_g 99
+# HELP x_y_z float gauge
+# TYPE x_y_z gauge
+x_y_z 99

@@ -1,0 +1,50 @@
+module fc-prom {
+    prefix "pb";
+    namespace "freeconf.org/prom-bridge";
+    description "Bridge from a YANG aware endpoint to Prometheus service for metrics";
+    revision 0000-00-00;
+
+    import metrics-extension {
+        prefix "metric";
+    }    
+
+    container service {
+        description "settings on how service will serve it's data";
+
+        leaf port {
+            description "start your own web server on this port";
+            type string;
+        }
+
+        leaf useLocalServer {
+            description "find local restconf server and add /metrics endpoint on same web service.";
+            type boolean;
+        }
+    }
+
+    container modules {
+        description "control processing of data tree";
+
+        leaf-list ignore {
+            description "modules to skip";
+            type string;
+        }
+    }
+
+    container render {
+        description "metrics on gathering metrics for Prometheus";
+        config false;
+
+        leaf count {
+            description "how many items in last render";
+            type int64;
+            metric:counter;
+        }
+
+        leaf duration {
+            description "time to pull together all metrics and render metrics";
+            type int64;
+            units "milliseconds";
+        }
+    }
+}
