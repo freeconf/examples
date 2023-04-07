@@ -29,7 +29,7 @@ The important point is not the time saving but that your application is not rest
 
 The `fcprom.Bridge` walks thru each `Browser` in the local `Device` browsing the YANG for metrics (i.e. `config false`) to build the Prometheus `/metrics` endpoint generating labels and descriptions from the YANG and of course grabbing the metric value.
 
-Because YANG doesn't understand Prometheus' metrics types like `gauge` or `counter` or know how you want to flatten metrics in YANG `lists`, the `fcprom` module  uses YANG extensions to help your control the translation. YANG extensions are ignored by other systems.
+Because YANG doesn't understand Prometheus' metrics types like `gauge` or `counter` or know how you want to flatten metrics in YANG `lists`, the `fcprom` module  uses YANG extensions to help you control the translation. YANG extensions are ignored by other systems.
 
 ### Defining some extensions
 
@@ -83,6 +83,7 @@ Go to [http://localhost:9090/](http://localhost:9090/) and enter `car_tire_wear`
 While you could import `fcprom` into your application directly by calling `go get github.com/freeconf/example` this example code may change without notice.
 
 ## Tips for extending:
-*  With less than 400 lines of code we can integrate all modules with Prometheus. This would make a good starter for a project for someone until Prometheus understands either RESTCONF or gNMI natively.
-* If you wanted to integrate the Prometheus module into a remote module, the [FreeCONF remote client browser API]({{< relref "../restconf-client" >}}) looks identical to the local browser API and so this code could easily be extended to be remotely pull metrics from applications and not have to expose `/metrics` endpoint.
+*  With less than 400 lines of code we were able to integrate RESTCONF with Prometheus. If you do extend this, consider sharing it. Prometheus project might consider reading RESTCONF or gNMI natively.
+* If you wanted to integrate the Prometheus module into a remote module, the [FreeCONF remote client browser API]({{< relref "../restconf-client" >}}) looks identical to the local browser API and so this code could easily be extended to  remotely pull metrics from applications and not have to expose `/metrics` endpoint.
 * It's likely you can come up with more extensions like `metrics:ignore` to skip data or `metrics:label` to override the default label.
+* You could come up with a single set of YANG extensions that works for all metrics systems and decouple things even further. 
