@@ -1,0 +1,74 @@
+module fc-slack {
+    prefix "c";
+    namespace "freeconf.org/slack-client";
+    description "Bridge to send notifications to the Slack chat service";
+    revision 0;
+
+    container client {
+        description "Slack client configuration and authentication";
+       
+        leaf apiToken {
+            description "API token required for communication with slack services";
+            type string;
+        }
+
+        leaf debug {
+            description "debug all request to console";
+            type boolean;        
+        }
+
+        leaf userToken {
+            description "User account to send messages on behalf of"; 
+            type string;
+        }
+    }
+
+    list subscription {
+        description "subscriptions that will be relayed to slack";
+
+        key "module path";
+        
+        leaf channel {
+            description "slack channel to send message";
+            type string;
+        }
+
+        leaf module {
+            description "name of the module to subscribe to";
+            type string;
+        }
+
+        leaf path {
+            description "XPath to notification message to relay to slack";
+            type string;
+        }
+
+        leaf counter {
+            description "number of messages sent on this relay";
+            type uint32;
+            config false;
+        }
+
+        leaf active {
+            description "was this subscription found and properly subscribed";
+            config false;
+            type boolean;
+        }
+    }
+
+    notification errors {
+        description "there was error with a subscription either subscribing or sending to slack";
+
+        leaf module {
+            type string;
+        }
+
+        leaf path {
+            type string;
+        }
+
+        leaf error {
+            type string;
+        }
+    }
+}

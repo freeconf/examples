@@ -1,0 +1,53 @@
+module fc-influx {
+    prefix "f";
+    namespace "freeconf.org";
+    revision 0;
+
+    container options {
+
+        container connection {
+            leaf addr {
+                description "http address of influx db service";
+                type string;
+            }
+
+            leaf apiToken {
+                description "Generate this from InfluxDB admin";
+                type string;
+            }
+        }
+
+        leaf database {
+            description "default database to send metrics to";
+            type string;
+        }
+
+        leaf organization {
+            type string;
+        }
+
+        leaf bucket {
+            type string;
+        }
+
+        anydata tags {
+            description "default set of tags to be sent with every metric";
+        }
+
+        leaf frequency {
+            description "seconds between polling for new metrics";
+            type uint64;
+            units secs;
+        }
+
+        leaf-list ignoreModules {
+            description "list of modules to ignore";
+            type string;
+        }
+
+        leaf-list ignorePaths {
+            description "list of regexs beyond the list of modules to ignore";
+            type string;
+        }
+    }
+}
