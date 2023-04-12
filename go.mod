@@ -3,8 +3,8 @@ module github.com/freeconf/examples
 go 1.18
 
 require (
-	github.com/freeconf/restconf v0.0.0-20230405122357-35c2d910ad38
-	github.com/freeconf/yang v0.0.0-20230405122240-93e4375862dd
+	github.com/freeconf/restconf v0.0.0-20230412215309-587d81f7b11a
+	github.com/freeconf/yang v0.0.0-20230412212849-84632fd80485
 )
 
 require (
