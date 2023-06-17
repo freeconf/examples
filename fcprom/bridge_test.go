@@ -100,7 +100,11 @@ func TestBridge(t *testing.T) {
 	bwsr := node.NewBrowser(m, n)
 	x := newExporter()
 	metricNode := x.node("x", []string{})
-	if err := bwsr.Root().Constrain("content=nonconfig").InsertInto(metricNode).LastErr; err != nil {
+	root := bwsr.Root()
+	defer root.Release()
+	sel, err := root.Constrain("content=nonconfig")
+	defer sel.Release()
+	if err := sel.InsertInto(metricNode); err != nil {
 		t.Fatal(err)
 	}
 	var actual bytes.Buffer

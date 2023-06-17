@@ -14,7 +14,7 @@ import (
 func TestClient(t *testing.T) {
 
 	// setup -  start a server
-	pathToYangFiles := "../yang"
+	pathToYangFiles := "../yang:../car"
 	serverYPath := source.Path(pathToYangFiles)
 	carServer := testdata.New()
 	local := device.New(serverYPath)

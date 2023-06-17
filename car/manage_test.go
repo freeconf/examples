@@ -17,7 +17,7 @@ func TestManage(t *testing.T) {
 	root := mgr.Root()
 
 	// Read all config
-	actual, err := nodeutil.WriteJSON(root.Find("?content=config"))
+	actual, err := nodeutil.WriteJSON(find(root, "?content=config"))
 	fc.AssertEqual(t, nil, err)
 	expected := `{"speed":1000,"tire":[{"pos":0,"size":"15"},{"pos":1,"size":"15"},{"pos":2,"size":"15"},{"pos":3,"size":"15"}]}`
 	fc.AssertEqual(t, expected, actual)
@@ -27,7 +27,7 @@ func TestManage(t *testing.T) {
 
 	// setup events stream reader
 	events := make(chan string)
-	unsub, err := root.Find("update").Notifications(func(n node.Notification) {
+	unsub, err := find(root, "update").Notifications(func(n node.Notification) {
 		event, _ := nodeutil.WriteJSON(n.Event)
 		events <- event
 	})
@@ -35,7 +35,7 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, 1, c.listeners.Len())
 
 	// write config starts car
-	err = root.UpdateFrom(nodeutil.ReadJSON(`{"speed":1000}`)).LastErr
+	err = root.UpdateFrom(nodeutil.ReadJSON(`{"speed":1000}`))
 	fc.AssertEqual(t, nil, err)
 	fc.AssertEqual(t, 1000, c.Speed)
 
@@ -48,10 +48,22 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, 0, c.listeners.Len())
 
 	// hit all the RPCs
-	fc.AssertEqual(t, nil, root.Find("rotateTires").Action(nil).LastErr)
-	fc.AssertEqual(t, nil, root.Find("replaceTires").Action(nil).LastErr)
-	fc.AssertEqual(t, nil, root.Find("reset").Action(nil).LastErr)
-	fc.AssertEqual(t, nil, root.Find("tire=0/replace").Action(nil).LastErr)
+	fc.AssertEqual(t, nil, justErr(find(root, "rotateTires").Action(nil)))
+	fc.AssertEqual(t, nil, justErr(find(root, "replaceTires").Action(nil)))
+	fc.AssertEqual(t, nil, justErr(find(root, "reset").Action(nil)))
+	fc.AssertEqual(t, nil, justErr(find(root, "tire=0/replace").Action(nil)))
+}
+
+func find(sel *node.Selection, path string) *node.Selection {
+	found, err := sel.Find(path)
+	if err != nil {
+		panic(err)
+	}
+	return found
+}
+
+func justErr(_ *node.Selection, err error) error {
+	return err
 }
 
 // no server, just your app and management API.  Testing
@@ -59,7 +71,7 @@ func TestManage(t *testing.T) {
 // we create a whole car
 func setupNewTestManager() (*Car, *node.Browser) {
 	c := New()
-	ypath := source.Path("../yang")
+	ypath := source.Path("../yang:.")
 	m := parser.RequireModule(ypath, "car")
 	return c, node.NewBrowser(m, Manage(c))
 }

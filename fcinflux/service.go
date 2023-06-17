@@ -130,11 +130,12 @@ func (svc *Service) run(ctx context.Context, sink sink) error {
 		if err != nil {
 			return err
 		}
-		root := b.RootWithContext(ctx).Constrain("content=nonconfig")
+		root := b.RootWithContext(ctx)
+		root, err = root.Constrain("content=nonconfig")
 		for _, ignore := range ignores {
 			root.Constraints.AddConstraint(ignore.name, 10, 10, ignore)
 		}
-		if err = root.UpdateInto(w).LastErr; err != nil {
+		if err = root.UpdateInto(w); err != nil {
 			return err
 		}
 	}

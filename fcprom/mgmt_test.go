@@ -9,10 +9,10 @@ import (
 )
 
 func TestBridgeMgmt(t *testing.T) {
-	ypath := source.Dir("../yang")
+	ypath := source.Path("../yang:.")
 	d := device.New(ypath)
 	b := NewBridge(d)
-	if err := d.Add("prom-bridge", Manage(b)); err != nil {
+	if err := d.Add("fc-prom", Manage(b)); err != nil {
 		t.Fatal(err)
 	}
 	var actual bytes.Buffer

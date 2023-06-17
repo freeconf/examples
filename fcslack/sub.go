@@ -26,11 +26,10 @@ func (n *subscription) id() string {
 
 // subscribe subscribes to the event stream and delegates message to sink
 func (n *subscription) subscribe(b *node.Browser, sink Sink, errs ErrListener) error {
-	s := b.Root().Find(n.Path)
-	if s.LastErr != nil {
-		return s.LastErr
+	s, err := b.Root().Find(n.Path)
+	if err != nil {
+		return err
 	}
-	var err error
 	n.Closer, err = s.Notifications(n.stream(sink, errs))
 	return err
 }

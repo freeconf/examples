@@ -100,6 +100,6 @@ func TestRequestAccess(t *testing.T) {
 		fc.AssertEqual(t, 200, resp.StatusCode)
 		actual, err := ioutil.ReadAll(resp.Body)
 		fc.AssertEqual(t, nil, err)
-		fc.AssertEqual(t, `{"x:messageFromRequest":"hi"}`, string(actual))
+		fc.AssertEqual(t, `{"messageFromRequest":"hi"}`, string(actual))
 	})
 }

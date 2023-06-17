@@ -31,7 +31,7 @@ func TestManage(t *testing.T) {
 				"abc" : "123"
 			}
 		}
-	}`)).LastErr
+	}`))
 	fc.AssertEqual(t, nil, err)
 	fc.AssertEqual(t, 10*time.Second, s.options.Frequency)
 	fc.AssertEqual(t, "abc", s.options.Connection.ApiToken)

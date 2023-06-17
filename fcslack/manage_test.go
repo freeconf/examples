@@ -33,7 +33,7 @@ func TestManage(t *testing.T) {
 			"module" : "m",
 			"path" : "n"
 		}]
-	}`)).LastErr
+	}`))
 	fc.RequireEqual(t, nil, err)
 	fc.RequireEqual(t, 1, len(c.notifications))
 
@@ -44,5 +44,5 @@ func TestManage(t *testing.T) {
 
 	actualStr, err := nodeutil.WriteJSON(b.Root())
 	fc.RequireEqual(t, nil, err)
-	fc.AssertEqual(t, `{"client":{"debug":false},"subscription":[{"enable":true,"module":"m","path":"n","counter":1,"active":true}]}`, actualStr)
+	fc.AssertEqual(t, `{"client":{"debug":false},"subscription":[{"module":"m","path":"n","counter":1,"active":true}]}`, actualStr)
 }

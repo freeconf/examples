@@ -27,16 +27,23 @@ func connectClient() {
 	if err != nil {
 		panic(err)
 	}
+	root := car.Root()
+	defer root.Release()
 
 	// Example of config: I feel the need, the need for speed
 	// bad config is rejected in client before it is sent to server
-	err = car.Root().UpsertFrom(nodeutil.ReadJSON(`{"speed":100}`)).LastErr
+	err = root.UpsertFrom(nodeutil.ReadJSON(`{"speed":100}`))
 	if err != nil {
 		panic(err)
 	}
 
 	// Example of metrics: Get all metrics as JSON
-	metrics, err := nodeutil.WriteJSON(car.Root().Find("?content=nonconfig"))
+	sel, err := root.Find("?content=nonconfig")
+	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	metrics, err := nodeutil.WriteJSON(sel)
 	if err != nil {
 		panic(err)
 	}
@@ -45,13 +52,22 @@ func connectClient() {
 	}
 
 	// Example of RPC: Reset odometer
-	err = car.Root().Find("reset").Action(nil).LastErr
+	sel, err = root.Find("reset")
 	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	if _, err = sel.Action(nil); err != nil {
 		panic(err)
 	}
 
 	// Example of notification: Car has an important update
-	unsub, err := car.Root().Find("update").Notifications(func(n node.Notification) {
+	sel, err = root.Find("update")
+	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	unsub, err := sel.Notifications(func(n node.Notification) {
 		msg, err := nodeutil.WriteJSON(n.Event)
 		if err != nil {
 			panic(err)
@@ -70,7 +86,9 @@ func connectClient() {
 	}
 
 	// Example of config: Enable debug logging on FreeCONF's remote RESTCONF server
-	err = rcServer.Root().UpsertFrom(nodeutil.ReadJSON(`{"debug":true}`)).LastErr
+	serverSel := rcServer.Root()
+	defer serverSel.Release()
+	serverSel.UpsertFrom(nodeutil.ReadJSON(`{"debug":true}`))
 	if err != nil {
 		panic(err)
 	}

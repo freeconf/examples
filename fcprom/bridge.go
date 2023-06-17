@@ -111,9 +111,15 @@ Modules:
 			return err
 		}
 		n := e.node(metricName(name), []string{})
-		sel := bwsr.Root().Constrain("content=nonconfig").InsertInto(n)
-		if sel.LastErr != nil {
-			return sel.LastErr
+		root := bwsr.Root()
+		defer root.Release()
+		sel, err := root.Constrain("content=nonconfig")
+		if err != nil {
+			return err
+		}
+		defer sel.Release()
+		if err = sel.InsertInto(n); err != nil {
+			return err
 		}
 		if err := writeMetrics(out, e.metrics); err != nil {
 			return err
