@@ -3,6 +3,7 @@ title: Node/Basic
 weight: 30
 tags:
   - go
+  - python
   - server
   - node
 description: >
@@ -18,10 +19,19 @@ description: >
 
 ## Highlevel routing
 
-**Go Code**
+**Code**
+{{< tabs name="app_src" >}}
+{{% tab name="Go" %}}
 ```go
 [[ cp "app.go" ]]
 ```
+{{% /tab %}}
+{{% tab name="Python" %}}
+```python
+[[ cp "python/app.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}
 
 **YANG**
 ```
@@ -29,14 +39,38 @@ description: >
 ```
 
 **...then your node code can be this.**
+
+{{< tabs name="manage_src" >}}
+{{% tab name="Go" %}}
 ```go
 [[ cp "manage.go" ]]
 ```
-
 You cannot use `Reflect` here because fields are private.
+{{% /tab %}}
+
+{{% tab name="Python" %}}
+```python
+[[ cp "python/manage.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}
+
 
 ### Additional Files
+{{< tabs name="test_src" >}}
+
+{{% tab name="Go" %}}
 file: `manage_test.go`
 ```go
 [[ cp "manage_test.go" ]]
 ```
+{{% /tab %}}
+
+{{% tab name="Python" %}}
+file: `test_manage.py`
+```python
+[[ cp "python/test_manage.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}
+

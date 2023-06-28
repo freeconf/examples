@@ -1,15 +1,13 @@
 package demo
 
+import "fmt"
+
 type Bird struct {
-	Name     string
-	Location Coordinates
+	Name string
+	X    int
+	Y    int
 }
 
-type Coordinates struct{}
-
-func (Coordinates) Set(string) {
-}
-
-func (Coordinates) Get() string {
-	return "0,0"
+func (b *Bird) GetCoordinates() string {
+	return fmt.Sprintf("%d,%d", b.X, b.Y)
 }

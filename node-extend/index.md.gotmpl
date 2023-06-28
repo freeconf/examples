@@ -19,21 +19,51 @@ description: >
 
 ## `Reflect` with one exception
 
+
+{{< tabs name="app_src" >}}
+{{% tab name="Go" %}}
 ```go
 [[ cp "bird.go" ]]
 ```
+{{% /tab %}}
+{{% tab name="Python" %}}
+```python
+[[ cp "python/bird.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}
+
 
 ```
 [[ cp "bird.yang" ]]
 ```
 
+{{< tabs name="manage_src" >}}
+{{% tab name="Go" %}}
 ```go
 [[ cp "manage.go" ]]
 ```
+{{% /tab %}}
+{{% tab name="Python" %}}
+```python
+[[ cp "python/manage.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}
 
 ### Addition Files
 
+{{< tabs name="test_src" >}}
+{{% tab name="Go" %}}
 file: `manage_test.go`
 ```go
 [[ cp "manage_test.go" ]]
 ```
+{{% /tab %}}
+{{% tab name="Python" %}}
+file: `test_manage.py`
+```python
+[[ cp "python/test_manage.py" ]]
+```
+{{% /tab %}}
+{{< /tabs >}}

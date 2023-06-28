@@ -11,13 +11,14 @@ import (
 )
 
 func TestManage(t *testing.T) {
-	b := &Bird{}
+	b := &Bird{Name: "sparrow", X: 99, Y: 1000}
 	ypath := source.Dir(".")
 	m := parser.RequireModule(ypath, "bird")
 	bwsr := node.NewBrowser(m, manage(b))
 
 	root := bwsr.Root()
+	defer root.Release()
 	actual, err := nodeutil.WriteJSON(root)
 	fc.AssertEqual(t, nil, err)
-	fc.AssertEqual(t, `{"location":"0,0"}`, actual)
+	fc.AssertEqual(t, `{"name":"sparrow","location":"99,1000"}`, actual)
 }

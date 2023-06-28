@@ -11,13 +11,14 @@ import (
 )
 
 func TestManage(t *testing.T) {
-	a := &App{}
+	a := NewApp()
 	ypath := source.Dir(".")
 	m := parser.RequireModule(ypath, "my-app")
 	bwsr := node.NewBrowser(m, manage(a))
 
 	root := bwsr.Root()
+	defer root.Release()
 	actual, err := nodeutil.WriteJSON(root)
 	fc.AssertEqual(t, nil, err)
-	fc.AssertEqual(t, `{}`, actual)
+	fc.AssertEqual(t, `{"users":{},"fonts":{},"bagels":{}}`, actual)
 }

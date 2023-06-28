@@ -12,13 +12,9 @@ func manage(b *Bird) node.Node {
 		OnField: func(p node.Node, r node.FieldRequest, hnd *node.ValueHandle) error {
 			switch r.Meta.Ident() {
 			case "location":
-				if r.Write {
-					b.Location.Set(hnd.Val.String())
-				} else {
-					hnd.Val = val.String(b.Location.Get())
-				}
+				hnd.Val = val.String(b.GetCoordinates())
 			default:
-				// delegates to ReflectChild
+				// delegates to ReflectChild for name
 				return p.Field(r, hnd)
 			}
 			return nil
