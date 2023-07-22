@@ -10,16 +10,8 @@ description: >
   Connecting to a RESTCONF server
 ---
 
-While you can easily interact with a RESTCONF server using any HTTP library, using a RESTCONF client can have advantages.  In particular it will let you walk a server and access the meta in the YANG alongside the data. FreeCONF gives you a client API that is similar to server API once you are connected.
+You can communicate with a RESTCONF server using a basic HTTP library.  For simple applications this is a reasonable approach.   If you want to "level-up" your API access to be able to walk the schema (i.e. YANG) then you can use the RESTCONF client in FreeCONF.
 
-
-```go
-[[ cp "client.go" ]]
-```
-
-### Additional Files
-
-file: `client_test.go`
 ```go
 [[ cp "client_test.go" ]]
 ```

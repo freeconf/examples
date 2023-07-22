@@ -1,0 +1,10 @@
+{
+    "fc-restconf": {
+        "web": {
+            "port": ":9998"
+        }
+    },
+    "car": {
+        "speed": 10
+    }
+}
