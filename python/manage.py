@@ -1,11 +1,20 @@
-import freeconf.nodeutil.reflect
-import freeconf.nodeutil.extend
-import freeconf.val
+from freeconf import nodeutil, val
 
-# Bridge car to FC management library
+#
+# C A R    M A N A G E M E N T
+#  Bridge from model to car app.
+#
+# manage is root handler from car.yang. i.e. module car { ... }
 def manage(c):
 
-    def action(node, req):
+    # implement navigation by containers and lists defined in yang file
+    def child(p, req):
+        if req.meta.ident == 'tire':
+            return manage_tires(c)
+        return p.child(req)
+
+    # implement RPCs (action or rpc)
+    def action(p, req):
         if req.meta.ident == 'stop':
             c.stop()
         elif req.meta.ident == 'start':
@@ -17,55 +26,69 @@ def manage(c):
         elif req.meta.ident == 'reset':            
             c.reset()
         else:
-            return node.action(req)
+            return p.action(req)
         return None
     
-    def child(node, req):
-        if req.meta.ident == 'tire':
-            return manage_tires(c)
-        return node.child(req)
-
-    def notification(node, req):
-        if req.meta.ident == 'update':
+    # implement yang notifications which are really just events
+    def notification(p, r):
+        if r.meta.ident == 'update':
             def listener(event):
-                req.send(freeconf.nodeutil.reflect.Reflect({
+			    # events are nodes too
+                r.send(nodeutil.Reflect({
                     "event": event
                 }))
             closer = c.on_update(listener)
             return closer
         
-        return node.notification(req)
+        return p.notification(r)
+    
+    # implement fields that are not automatically handled by reflection.
+    def field(p, r, w):
+        if r.meta.ident == 'pollInterval':
+            if r.write:
+                c.poll_interval = float(w.v) / 1000 # ms to secs
+            else:
+                return val.Val(int(c.poll_interval * 1000)) # secs to ms
+        else:
+            return p.field(r, w)
+        return None
 
-    # because car's members and methods align with yang, we can use 
-    # reflection for all of the CRUD
-    return freeconf.nodeutil.extend.Extend(
-        base = freeconf.nodeutil.reflect.Reflect(c),
-        on_action = action, on_notification=notification, on_child=child)
+	# Extend and Reflect form a powerful combination, we're letting reflect do a lot of the CRUD
+	# when the yang file matches the field names.  But we extend reflection
+	# to add as much custom behavior as we want
+    return nodeutil.Extend(
+        base = nodeutil.Reflect(c),
+        on_action = action, on_notification=notification, on_child=child, on_field=field)
 
 
-def manage_tires(car):
+# manage_tires handles list of tires.
+def manage_tires(c):
     def next(r):
         key = r.key
         found = None
         if key:
-            pos = key[0].value
-            if pos < len(car.tire):
-                found = car.tire[pos]
-        elif r.row < len(car.tire):
-            found = car.tire[r.row]
-            key = [ freeconf.val.Val(freeconf.val.Format.INT32, r.row) ]
+            # request for a specific tire by key (pos)
+            pos = key[0].v
+            if pos < len(c.tire):
+                found = c.tire[pos]
+        elif r.row < len(c.tire):
+            # request for the nth tire in list
+            found = c.tire[r.row]
+            key = [ val.Val(r.row) ]
 
         if found:
             return manage_tire(found), key
-    return freeconf.nodeutil.basic.Basic(on_next=next)
+    return nodeutil.Basic(on_next=next)
 
-
+# manage_tire handles each tire node.  Everything *inside* list tire { ... }
 def manage_tire(t):
-    def action(r):
+    def action(p, r):
         if r.meta.ident == "replace":
             t.replace()
         return None
-    return freeconf.nodeutil.extend.Extend(
-        base=freeconf.nodeutil.reflect.Reflect(t),
+	# again, let reflection do a lot of the work with one extension to handle replace tire
+    # action
+    return nodeutil.Extend(
+        base=nodeutil.Reflect(t),
         on_action=action
     )

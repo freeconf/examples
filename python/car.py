@@ -3,19 +3,40 @@ import time
 import threading
 import random
 
+# If these strings match YANG enum ids then they will be converted automatically.  Ints would
+# work as well
+EVENT_STARTED = "carStarted"
+EVENT_STOPPED = "carStopped"
+EVENT_FLAT_TIRE = "flatTire"
+
 
 # Simple application, no connection to management 
+# C A R
+# Your application code.
+#
+# Notice there are no reference to FreeCONF in this file.  This means your
+# code remains:
+# - unit test-able
+# - Not auto-generated from model files
+# - free of annotations/tags
 class Car():
 
     def __init__(self):
-        self.speed = 9
+        
+        # metrics/state
         self.miles = 0
         self.running = False
-        self.poll_interval = 1.0 #secs
         self.thread = None
-        self.engine = {}
-        self.listeners = []
+
+        # potential configuable fields
+        self.speed = 1000
         self.new_tires()
+        self.poll_interval = 1.0 #secs
+
+        # Listeners are common on manageable code.  Having said that, listeners
+        # remain relevant to your application.  The manage.go file is responsible
+        # for bridging the conversion from application to management api.
+        self.listeners = []
 
     def start(self):
         if self.running:
@@ -48,13 +69,13 @@ class Car():
     def on_update(self, listener):
         self.listeners.append(listener)
         def closer():
+            print("closed listener")
             self.listeners.remove(listener)
         return closer
 
     def update_listeners(self, event):
-        print(f"car {event}")
         for l in self.listeners:
-            l(event)
+            l(event)    
 
     def new_tires(self):
         self.tire = []
@@ -74,14 +95,10 @@ class Car():
         self.tire[1] = self.tire[2]
         self.tire[2] = self.tire[3]
         self.tire[3] = first
-        for i in range(self.tire):
-            self.tire[i] = i
+        for i in range(len(self.tire)):
+            self.tire[i].pos = i
         self.last_rotation = int(self.miles)
 
-# If these strings match YANG enum ids then they will be converted automatically
-EVENT_STARTED = "carStarted"
-EVENT_STOPPED = "carStopped"
-EVENT_FLAT_TIRE = "flatTire"
 
 class Tire:
     def __init__(self, pos):

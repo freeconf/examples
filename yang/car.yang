@@ -11,9 +11,16 @@ module car {
 	}
 	
 	leaf speed {
-		description "How fast the car goes";
+		description "How many miles the car travels in one poll interval";
 	    type int32;
 		units milesPerSecond;
+		default 1000;
+	}
+
+	leaf pollInterval {
+		description "Time between traveling ${speed} miles";
+		type int32;
+		units millisecs;
 		default 1000;
 	}
 
@@ -39,7 +46,7 @@ module car {
         }
         leaf size {
             type string;
-            default 15;
+            default "H15";
         }
         leaf worn {
             config false;
@@ -61,10 +68,6 @@ module car {
 		}
 	}
 
-    container engine {        
-        anydata specs;
-    }
-
 	rpc reset {
 		description "Reset the odometer";
 	}
@@ -76,6 +79,14 @@ module car {
     rpc replaceTires {
         description "Replace all tires";
     }
+
+	rpc start {
+		description "Start the car if it is not already started";
+	}
+
+	rpc stop {
+		description "Stop the car if it is not already stopped";
+	}
 
     notification update {
         description "Important state information about your car";

@@ -1,6 +1,8 @@
 package car
 
 import (
+	"time"
+
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/val"
@@ -13,13 +15,13 @@ import (
 // Manage is root handler from car.yang. i.e. module car { ... }
 func Manage(c *Car) node.Node {
 
-	// Powerful combination, we're letting reflect do a lot of the CRUD
+	// Extend and Reflect form a powerful combination, we're letting reflect do a lot of the CRUD
 	// when the yang file matches the field names.  But we extend reflection
 	// to add as much custom behavior as we want
 	return &nodeutil.Extend{
 		Base: nodeutil.ReflectChild(c),
 
-		// drilling into child objects defined by yang file
+		// implement navigation by containers and lists defined in yang file
 		OnChild: func(p node.Node, r node.ChildRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
 			case "tire":
@@ -31,9 +33,13 @@ func Manage(c *Car) node.Node {
 			}
 		},
 
-		// RPCs
+		// implement RPCs
 		OnAction: func(p node.Node, r node.ActionRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
+			case "start":
+				c.Start()
+			case "stop":
+				c.Stop()
 			case "rotateTires":
 				c.rotateTires()
 			case "replaceTires":
@@ -44,7 +50,7 @@ func Manage(c *Car) node.Node {
 			return nil, nil
 		},
 
-		// Events
+		// implement yang notifications which are really just events
 		OnNotify: func(p node.Node, r node.NotifyRequest) (node.NotifyCloser, error) {
 			switch r.Meta.Ident() {
 			case "update":
@@ -55,6 +61,7 @@ func Manage(c *Car) node.Node {
 					}{
 						Event: int(e),
 					}
+					// events are nodes too
 					r.Send(nodeutil.ReflectChild(&msg))
 				})
 
@@ -64,15 +71,20 @@ func Manage(c *Car) node.Node {
 			return nil, nil
 		},
 
-		// override OnEndEdit just to know when car has been created and
-		// fully initialized so we can start the car running
-		OnEndEdit: func(p node.Node, r node.NodeRequest) error {
-			// allow reflection node handler to finish, this is where defaults
-			// get set.
-			if err := p.EndEdit(r); err != nil {
-				return err
+		// implement fields that are not automatically handled by reflection.
+		OnField: func(p node.Node, r node.FieldRequest, hnd *node.ValueHandle) error {
+			switch r.Meta.Ident() {
+			case "pollInterval":
+				// another option for this is register field handler for reflection so that
+				// it would handle this w/o having to implement OnField here
+				if r.Write {
+					c.PollInterval = time.Duration(hnd.Val.Value().(int)) * time.Millisecond
+				} else {
+					hnd.Val = val.Int32(int(c.PollInterval / time.Millisecond))
+				}
+			default:
+				return p.Field(r, hnd)
 			}
-			c.Start()
 			return nil
 		},
 	}
@@ -87,6 +99,7 @@ func manageTires(tires []*Tire) node.Node {
 			var t *Tire
 			return nodeutil.BasicNextItem{
 				GetByKey: func() error {
+					// request for a specific tire by key (pos)
 					pos := r.Key[0].Value().(int)
 					if pos < len(tires) {
 						t = tires[pos]
@@ -94,7 +107,7 @@ func manageTires(tires []*Tire) node.Node {
 					return nil
 				},
 				GetByRow: func() ([]val.Value, error) {
-					// request for nth item in list
+					// request for nth tire in list
 					if r.Row < len(tires) {
 						t = tires[r.Row]
 						return []val.Value{val.Int32(r.Row)}, nil
@@ -103,7 +116,6 @@ func manageTires(tires []*Tire) node.Node {
 				},
 				Node: func() (node.Node, error) {
 					if t != nil {
-						// let reflection do a lot of the work
 						return ManageTire(t), nil
 					}
 					return nil, nil
@@ -113,9 +125,10 @@ func manageTires(tires []*Tire) node.Node {
 	}
 }
 
-// TireNode handles each tire node.  Everything *inside* list tire { ...}
+// TireNode handles each tire node.  Everything *inside* list tire { ... }
 func ManageTire(t *Tire) node.Node {
-	// let reflection do a lot of the work
+	// again, let reflection do a lot of the work with one extension to handle replace tire
+	// action
 	return &nodeutil.Extend{
 		Base: nodeutil.ReflectChild(t),
 		OnAction: func(parent node.Node, r node.ActionRequest) (output node.Node, err error) {

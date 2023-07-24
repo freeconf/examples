@@ -2,6 +2,7 @@ package car
 
 import (
 	"container/list"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -17,10 +18,6 @@ import (
 // - free of golang source code annotations/tags.
 type Car struct {
 	Tire []*Tire
-
-	// Not everything has to be structs, using a map may be useful
-	// in early prototyping
-	Specs map[string]interface{}
 
 	Miles   float64
 	Running bool
@@ -55,9 +52,9 @@ const (
 func (e updateEvent) String() string {
 	strs := []string{
 		"unknown",
-		"started",
-		"stopped",
-		"flat",
+		"carStarted",
+		"carStopped",
+		"flatTire",
 	}
 	if int(e) < len(strs) {
 		return strs[e]
@@ -69,7 +66,6 @@ func New() *Car {
 	c := &Car{
 		listeners:    list.New(),
 		Speed:        1000,
-		Specs:        make(map[string]interface{}),
 		PollInterval: time.Second,
 	}
 	c.newTires()
@@ -83,8 +79,13 @@ func (c *Car) newTires() {
 		c.Tire[pos] = &Tire{
 			Pos:  pos,
 			Wear: 100,
+			Size: "H15",
 		}
 	}
+}
+
+func (c *Car) Stop() {
+	c.Running = false
 }
 
 func (c *Car) Start() {
@@ -94,27 +95,25 @@ func (c *Car) Start() {
 	go func() {
 		c.Running = true
 		c.updateListeners(carStarted)
+		defer func() {
+			c.Running = false
+			c.updateListeners(carStopped)
+		}()
 		for c.Speed > 0 {
 			poll := time.NewTicker(c.PollInterval)
 			for c.Running {
 				for range poll.C {
 					c.Miles += float64(c.Speed)
-
 					for _, t := range c.Tire {
-
 						t.endureMileage(c.Speed)
-
 						if t.Flat {
 							c.updateListeners(flatTire)
-							goto done
+							return
 						}
 					}
 				}
 			}
 		}
-	done:
-		c.Running = false
-		c.updateListeners(carStopped)
 	}()
 }
 
@@ -123,6 +122,7 @@ func (c *Car) OnUpdate(l CarListener) Subscription {
 }
 
 func (c *Car) updateListeners(e updateEvent) {
+	fmt.Printf("car %s\n", e)
 	i := c.listeners.Front()
 	for i != nil {
 		i.Value.(CarListener)(e)
@@ -135,7 +135,6 @@ func (c *Car) replaceTires() {
 		t.replace()
 	}
 	c.LastRotation = int64(c.Miles)
-	c.Start()
 }
 
 func (c *Car) rotateTires() {
