@@ -68,7 +68,7 @@ func Manage(c *Car) node.Node {
 				// we return a close **function**, we are not actually closing here
 				return sub.Close, nil
 			}
-			return nil, nil
+			return p.Notify(r)
 		},
 
 		// implement fields that are not automatically handled by reflection.

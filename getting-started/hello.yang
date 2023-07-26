@@ -1,0 +1,10 @@
+module hello {
+	
+	namespace "n";
+	prefix "h";
+	revision 0000-00-00;
+
+    leaf message {
+        type string;
+    }
+}

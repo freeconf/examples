@@ -48,6 +48,9 @@ class Car():
         self.miles = 0
 
     def stop(self):
+        """
+          Will take up to poll_interval seconds to come to a stop
+        """
         self.running = False
 
     def run(self):
@@ -67,13 +70,16 @@ class Car():
             self.update_listeners(EVENT_STOPPED)
 
     def on_update(self, listener):
+        """
+        listen for car events like start, stop and flat tire
+        """
         self.listeners.append(listener)
         def closer():
-            print("closed listener")
             self.listeners.remove(listener)
         return closer
 
     def update_listeners(self, event):
+        print(f"car {event}")
         for l in self.listeners:
             l(event)    
 
@@ -115,6 +121,8 @@ class Tire:
 
     def check_if_flat(self):
         if not self.flat:
+            # emulate that the more wear a tire has, the more likely it will
+            # get a flat, but there is always a chance.
             self.flat = (self.wear - (random.random() * 10)) < 0
 
     def endure_mileage(self, speed):

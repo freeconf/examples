@@ -30,7 +30,7 @@ def manage(c):
         return None
     
     # implement yang notifications which are really just events
-    def notification(p, r):
+    def notify(p, r):
         if r.meta.ident == 'update':
             def listener(event):
 			    # events are nodes too
@@ -40,7 +40,7 @@ def manage(c):
             closer = c.on_update(listener)
             return closer
         
-        return p.notification(r)
+        return p.notify(r)
     
     # implement fields that are not automatically handled by reflection.
     def field(p, r, w):
@@ -58,7 +58,7 @@ def manage(c):
 	# to add as much custom behavior as we want
     return nodeutil.Extend(
         base = nodeutil.Reflect(c),
-        on_action = action, on_notification=notification, on_child=child, on_field=field)
+        on_action = action, on_notify=notify, on_child=child, on_field=field)
 
 
 # manage_tires handles list of tires.

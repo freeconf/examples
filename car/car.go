@@ -84,6 +84,7 @@ func (c *Car) newTires() {
 	}
 }
 
+// Stop will take up to poll_interval seconds to come to a stop
 func (c *Car) Stop() {
 	c.Running = false
 }
@@ -117,6 +118,7 @@ func (c *Car) Start() {
 	}()
 }
 
+// OnUpdate to listen for car events like start, stop and flat tire
 func (c *Car) OnUpdate(l CarListener) Subscription {
 	return NewSubscription(c.listeners, c.listeners.PushBack(l))
 }
@@ -166,6 +168,8 @@ func (t *Tire) replace() {
 
 func (t *Tire) checkIfFlat() {
 	if !t.Flat {
+		// emulate that the more wear a tire has, the more likely it will
+		// get a flat, but there is always a chance.
 		t.Flat = (t.Wear - (rand.Float64() * 10)) < 0
 	}
 }

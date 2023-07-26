@@ -6,63 +6,58 @@ import queue
 import car
 import time
 
-# Test the car management logic in manage.py
+# Test the car management API in manage.py
 class TestManage(unittest.TestCase):
 
     def test_manage(self):
-        ypath = source.any(
-            source.restconf_internal_ypath(),
-            source.path("../yang")
-        )
+        # where YANG files are
+        ypath = source.path("../yang")
         mod = parser.load_module_file(ypath, 'car')
+
+        # create your empty app instance
         app = car.Car()
 
-        # no web server needed, just your app and management function.
+        # no web server needed, just your app instance and management entry point.
         brwsr = node.Browser(mod, manage.manage(app))
+
+        # get a selection into the management API to begin interaction
         root = brwsr.root()
 
-        # read all the config
+        # TEST CONFIG GET: read all the config
         curr_cfg = nodeutil.json_write_str(root.find("?content=config"))
         expected = '{"speed":1000,"pollInterval":1000,"tire":[{"pos":0,"size":"H15"},{"pos":1,"size":"H15"},{"pos":2,"size":"H15"},{"pos":3,"size":"H15"}]}'
         self.assertEqual(expected, curr_cfg)
 
-        # access car and verify w/API
+        # verify car starts not running.  Here we are checking from the car instance itsel
         self.assertEqual(False, app.running)
 
-        # setup event listener, verify events later
+        # SETUP EVENT TEST: here we add a listener to receive events and stick them in a thread-safe
+        # queue for assertion checking later
         events = queue.Queue()
         def on_update(n):
             msg = nodeutil.json_write_str(n.event)
             events.put(msg)
         unsub = root.find("update").notification(on_update)
 
-        # write config starts car
-        root.update_from(nodeutil.json_read_str('{"speed":1000}'))
-        self.assertEqual(1000, app.speed)
+        # TEST CONFIG SET: write config
+        root.update_from(nodeutil.json_read_str('{"speed":2000}'))
+        self.assertEqual(2000, app.speed)
 
-        # start car
+        # TEST RPC: start car
         root.find("start").action()
 
-        print(f"len after sub II {len(app.listeners)}")
-
-        # verify first event 
+        # TEST EVENT: verify first event. will block until event comes in
         self.assertEqual('{"event":"carStarted"}', events.get())
 
-        # done listening for events, ensure listener is removed
+        # TEST EVENT UNSUBSCRIBE: done listening for events
         unsub()
 
-        #self.assertEqual(0, len(app.listeners))
-        print(f"len after unsub {len(app.listeners)}")
-
-        # hit all the RPCs
+        # TEST RPCS: just hit all the RPCs for code coverage.  You could easily add the
+        # underlying car object is changed accordingly
         root.find("rotateTires").action()
         root.find("replaceTires").action()
         root.find("reset").action()
         root.find("tire=0/replace").action()
-
-        time.sleep(1)
-        print(f"len after unsub II {len(app.listeners)}")
-
 
 if __name__ == '__main__':
     unittest.main()
