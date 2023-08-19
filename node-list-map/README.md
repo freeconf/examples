@@ -1,3 +1,0 @@
-
-[Docs](path/to/docs)
-
