@@ -11,10 +11,10 @@ import (
 )
 
 func TestManage(t *testing.T) {
-	cmunk := &Chipmunk{Friend: map[string]*Friend{"joe": {Name: "joe"}}}
+	cmunk := &Chipmunk{Friends: map[string]*Friend{"joe": {Name: "joe"}}}
 	ypath := source.Dir(".")
 	m := parser.RequireModule(ypath, "chipmunk")
-	b := node.NewBrowser(m, manage(cmunk))
+	b := node.NewBrowser(m, Manage(cmunk))
 
 	actual, err := nodeutil.WriteJSON(b.Root())
 	fc.AssertEqual(t, nil, err)

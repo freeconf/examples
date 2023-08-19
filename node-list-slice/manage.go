@@ -7,6 +7,15 @@ import (
 )
 
 func manage(b *Bear) node.Node {
+	return &nodeutil.Node{
+		Object: b,
+		Options: nodeutil.NodeOptions{
+			TryPluralOnLists: true,
+		},
+	}
+}
+
+func managex(b *Bear) node.Node {
 	return &nodeutil.Basic{
 		OnChild: func(r node.ChildRequest) (child node.Node, err error) {
 			switch r.Meta.Ident() {

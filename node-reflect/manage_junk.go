@@ -6,5 +6,5 @@ import (
 )
 
 func manageJunkDrawer(app *JunkDrawer) node.Node {
-	return nodeutil.ReflectChild(app)
+	return &nodeutil.Node{Object: app}
 }

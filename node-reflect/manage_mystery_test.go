@@ -34,7 +34,7 @@ func TestMystery(t *testing.T) {
 		}{
 			"john",
 		}
-		manage := nodeutil.ReflectChild(&app)
+		manage := &nodeutil.Node{Object: &app}
 
 		// verify works
 		b := node.NewBrowser(m, manage)
@@ -47,7 +47,7 @@ func TestMystery(t *testing.T) {
 
 		// create a node from map
 		app := map[string]interface{}{"name": "mary"}
-		manage := nodeutil.ReflectChild(app)
+		manage := &nodeutil.Node{Object: app}
 
 		// verify works
 		b := node.NewBrowser(m, manage)

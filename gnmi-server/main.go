@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-	"strings"
 
 	"github.com/freeconf/examples/car"
 	"github.com/freeconf/gnmi"
@@ -19,7 +18,7 @@ func main() {
 	app := car.New()
 
 	// where the yang files are stored
-	ypath := source.Path("../yang:../car")
+	ypath := source.Any(gnmi.InternalYPath, source.Path("../yang"))
 
 	// Device is just a container for browsers.  Needs to know where YANG files are stored
 	d := device.New(ypath)
@@ -33,16 +32,7 @@ func main() {
 	gnmi.NewServer(d)
 
 	// apply start-up config normally stored in a config file on disk
-	config := `{
-		"fc-gnmi":{
-			"debug": true,
-			"web":{
-				"port":":8090"
-			}
-		},
-        "car":{"speed":10}
-	}`
-	if err := d.ApplyStartupConfig(strings.NewReader(config)); err != nil {
+	if err := d.ApplyStartupConfigFile("./startup.json"); err != nil {
 		panic(err)
 	}
 

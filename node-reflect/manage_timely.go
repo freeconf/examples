@@ -7,26 +7,26 @@ import (
 	"github.com/freeconf/yang/meta"
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
-	"github.com/freeconf/yang/val"
 )
 
-var timeHandler = nodeutil.ReflectField{
-	When: nodeutil.ReflectFieldByType(reflect.TypeOf(time.Time{})),
-	OnRead: func(leaf meta.Leafable, fieldname string, elem reflect.Value, fieldElem reflect.Value) (val.Value, error) {
-		t := fieldElem.Interface().(time.Time)
-		return val.Int64(t.Unix()), nil
-	},
-	OnWrite: func(leaf meta.Leafable, fieldname string, elem reflect.Value, fieldElem reflect.Value, v val.Value) error {
-		t := time.Unix(v.Value().(int64), 0)
-		fieldElem.Set(reflect.ValueOf(t))
-		return nil
-	},
-}
-
 func manageTimely(t *Timely) node.Node {
-	return nodeutil.Reflect{
-		OnField: []nodeutil.ReflectField{
-			timeHandler,
+	timeType := reflect.TypeOf(time.Time{})
+	return &nodeutil.Node{
+		Object: t,
+		OnRead: func(ref *nodeutil.Node, m meta.Definition, t reflect.Type, v reflect.Value) (reflect.Value, error) {
+			switch t {
+			case timeType:
+				at := v.Interface().(time.Time)
+				return reflect.ValueOf(at.Unix()), nil
+			}
+			return v, nil
 		},
-	}.Object(t)
+		OnWrite: func(ref *nodeutil.Node, m meta.Definition, t reflect.Type, v reflect.Value) (reflect.Value, error) {
+			switch t {
+			case timeType:
+				return reflect.ValueOf(time.Unix(v.Int(), 0)), nil
+			}
+			return v, nil
+		},
+	}
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func manage(app *Contacts) node.Node {
-	return nodeutil.ReflectChild(app)
+	return &nodeutil.Node{Object: app}
 }
