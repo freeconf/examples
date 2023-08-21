@@ -23,7 +23,7 @@ func main() {
 	app := car.New()
 
 	// where the yang files are stored
-	ypath := source.Path("../yang:../car:.")
+	ypath := source.Any(restconf.InternalYPath, source.Path("../yang:."))
 
 	// Device is just a container for browsers.  Needs to know where YANG files are stored
 	d := device.New(ypath)

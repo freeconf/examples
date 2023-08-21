@@ -103,7 +103,7 @@ func connectClient() {
 func TestClient(t *testing.T) {
 
 	// setup -  start a server
-	ypath := source.Path("../car")
+	ypath := source.Path("../yang")
 	serverYPath := source.Any(ypath, restconf.InternalYPath)
 	carServer := car.New()
 	local := device.New(serverYPath)

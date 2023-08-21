@@ -2,7 +2,7 @@ package demo
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -49,7 +49,7 @@ func manageApp(a *App) node.Node {
 }
 
 func startServer() *restconf.Server {
-	ypath := source.Dir("../yang")
+	ypath := source.Any(restconf.InternalYPath, source.Dir("../yang"))
 	m, err := parser.LoadModuleFromString(ypath, module)
 	if err != nil {
 		panic(err)
@@ -98,7 +98,7 @@ func TestRequestAccess(t *testing.T) {
 		resp, err := c.Do(req)
 		fc.AssertEqual(t, nil, err)
 		fc.AssertEqual(t, 200, resp.StatusCode)
-		actual, err := ioutil.ReadAll(resp.Body)
+		actual, err := io.ReadAll(resp.Body)
 		fc.AssertEqual(t, nil, err)
 		fc.AssertEqual(t, `{"messageFromRequest":"hi"}`, string(actual))
 	})

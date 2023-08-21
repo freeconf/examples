@@ -1,0 +1,11 @@
+{
+    "fc-gnmi": {
+        "debug": true,
+        "web": {
+            "port": ":8090"
+        }
+    },
+    "car": {
+        "speed": 10
+    }
+}

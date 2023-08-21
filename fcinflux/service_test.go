@@ -12,7 +12,7 @@ import (
 )
 
 func TestStart(t *testing.T) {
-	ypath := source.Dir("../car")
+	ypath := source.Dir("../yang")
 	d := device.New(ypath)
 	c := car.New()
 	fc.AssertEqual(t, nil, d.Add("car", car.Manage(c)))
