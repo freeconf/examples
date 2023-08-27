@@ -8,14 +8,10 @@ import (
 )
 
 // ////////////////////////
-// C A R
-// Your application code.
+// C A R - example application
 //
-// Notice there are no reference to FreeCONF in this file.  This means your
-// code remains:
-// - unit test-able
-// - Not auto-generated from model files
-// - free of golang source code annotations/tags.
+// This has nothing to do with FreeCONF, just an example application written in Go.
+// that models a running car that can get flat tires when tires are worn.
 type Car struct {
 	Tire []*Tire
 
@@ -39,17 +35,19 @@ type Car struct {
 	listeners *list.List
 }
 
-type CarListener func(updateEvent)
+// CarListener for receiving car update events
+type CarListener func(UpdateEvent)
 
-type updateEvent int
+// car event types
+type UpdateEvent int
 
 const (
-	carStarted updateEvent = iota + 1
-	carStopped
-	flatTire
+	CarStarted UpdateEvent = iota + 1
+	CarStopped
+	FlatTire
 )
 
-func (e updateEvent) String() string {
+func (e UpdateEvent) String() string {
 	strs := []string{
 		"unknown",
 		"carStarted",
@@ -68,20 +66,8 @@ func New() *Car {
 		Speed:        1000,
 		PollInterval: time.Second,
 	}
-	c.newTires()
+	c.NewTires()
 	return c
-}
-
-func (c *Car) newTires() {
-	c.Tire = make([]*Tire, 4)
-	c.LastRotation = int64(c.Miles)
-	for pos := 0; pos < len(c.Tire); pos++ {
-		c.Tire[pos] = &Tire{
-			Pos:  pos,
-			Wear: 100,
-			Size: "H15",
-		}
-	}
 }
 
 // Stop will take up to poll_interval seconds to come to a stop
@@ -95,10 +81,10 @@ func (c *Car) Start() {
 	}
 	go func() {
 		c.Running = true
-		c.updateListeners(carStarted)
+		c.updateListeners(CarStarted)
 		defer func() {
 			c.Running = false
-			c.updateListeners(carStopped)
+			c.updateListeners(CarStopped)
 		}()
 		for c.Speed > 0 {
 			poll := time.NewTicker(c.PollInterval)
@@ -108,7 +94,7 @@ func (c *Car) Start() {
 					for _, t := range c.Tire {
 						t.endureMileage(c.Speed)
 						if t.Flat {
-							c.updateListeners(flatTire)
+							c.updateListeners(FlatTire)
 							return
 						}
 					}
@@ -123,23 +109,26 @@ func (c *Car) OnUpdate(l CarListener) Subscription {
 	return NewSubscription(c.listeners, c.listeners.PushBack(l))
 }
 
-func (c *Car) updateListeners(e updateEvent) {
-	fmt.Printf("car %s\n", e)
-	i := c.listeners.Front()
-	for i != nil {
-		i.Value.(CarListener)(e)
-		i = i.Next()
+func (c *Car) NewTires() {
+	c.Tire = make([]*Tire, 4)
+	c.LastRotation = int64(c.Miles)
+	for pos := 0; pos < len(c.Tire); pos++ {
+		c.Tire[pos] = &Tire{
+			Pos:  pos,
+			Wear: 100,
+			Size: "H15",
+		}
 	}
 }
 
-func (c *Car) replaceTires() {
+func (c *Car) ReplaceTires() {
 	for _, t := range c.Tire {
-		t.replace()
+		t.Replace()
 	}
 	c.LastRotation = int64(c.Miles)
 }
 
-func (c *Car) rotateTires() {
+func (c *Car) RotateTires() {
 	x := c.Tire[0]
 	c.Tire[0] = c.Tire[1]
 	c.Tire[1] = c.Tire[2]
@@ -151,6 +140,15 @@ func (c *Car) rotateTires() {
 	c.LastRotation = int64(c.Miles)
 }
 
+func (c *Car) updateListeners(e UpdateEvent) {
+	fmt.Printf("car %s\n", e)
+	i := c.listeners.Front()
+	for i != nil {
+		i.Value.(CarListener)(e)
+		i = i.Next()
+	}
+}
+
 // T I R E
 type Tire struct {
 	Pos  int
@@ -160,7 +158,7 @@ type Tire struct {
 	Worn bool
 }
 
-func (t *Tire) replace() {
+func (t *Tire) Replace() {
 	t.Wear = 100
 	t.Flat = false
 	t.Worn = false
@@ -184,6 +182,9 @@ func (t *Tire) endureMileage(speed int) {
 func (t *Tire) checkForWear() bool {
 	return t.Wear < 20
 }
+
+///////////////////////
+// U T I L
 
 // Subscription is handle into a list.List that when closed
 // will automatically remove item from list.  Useful for maintaining
