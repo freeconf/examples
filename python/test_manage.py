@@ -47,7 +47,9 @@ class TestManage(unittest.TestCase):
         root.find("start").action()
 
         # TEST EVENT: verify first event. will block until event comes in
+        print("waiting for event...")
         self.assertEqual('{"event":"carStarted"}', events.get())
+        print("event receieved.")
 
         # TEST EVENT UNSUBSCRIBE: done listening for events
         unsub()
@@ -57,7 +59,9 @@ class TestManage(unittest.TestCase):
         root.find("rotateTires").action()
         root.find("replaceTires").action()
         root.find("reset").action()
+        self.assertEqual(0, app.miles)
         root.find("tire=0/replace").action()
+        print("done")
 
 if __name__ == '__main__':
     unittest.main()

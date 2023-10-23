@@ -13,10 +13,14 @@ github.com/freeconf/restconf v0.0.0-20230412215309-587d81f7b11a h1:FIZAT5nOWoIxo
 github.com/freeconf/restconf v0.0.0-20230412215309-587d81f7b11a/go.mod h1:Cj6CjaOSAeExmam5fDtfHHTWhOk0g+G3DLVa/wrW/4Y=
 github.com/freeconf/restconf v0.0.0-20230821105745-0b57571700da h1:oAAWHgag49E77AvwrAKL9L/XNPILpT2jYrcuv9R/Yqw=
 github.com/freeconf/restconf v0.0.0-20230821105745-0b57571700da/go.mod h1:U46ct55+6LoDOAhgOvdJOb/hzBQctzRilsq2f6vRzY0=
+github.com/freeconf/restconf v0.0.0-20230831100555-cc85cd79c19b h1:alMNHG3jGzFu7G+qhClcVKNHxrC7LeR+5H4ZkLOuwnM=
+github.com/freeconf/restconf v0.0.0-20230831100555-cc85cd79c19b/go.mod h1:Ltyfa09tG4VLxUugCJhbajFI2NCHqtPBXwm+hzBLxdQ=
 github.com/freeconf/yang v0.0.0-20230412212849-84632fd80485 h1:VIwgwCsZnEz/vg2u+82TQVV7Qts2FsGDlzEecjNwfUQ=
 github.com/freeconf/yang v0.0.0-20230412212849-84632fd80485/go.mod h1:mWEJ47bQKL2+1uMaHsA6VjRtoO+svJ2LcIiN+StJqNY=
 github.com/freeconf/yang v0.0.0-20230821105535-d155c2806a88 h1:Ke/hC3iThdqQ+nc/URe8W+VU/e9COKMQyPOta+9DaqA=
 github.com/freeconf/yang v0.0.0-20230821105535-d155c2806a88/go.mod h1:mWEJ47bQKL2+1uMaHsA6VjRtoO+svJ2LcIiN+StJqNY=
+github.com/freeconf/yang v0.0.0-20230831100447-20decdb7a190 h1:LGYpXeh6AE1TMuGusfVuJ7zDaRL6U5cgZ1gj00m/ZqI=
+github.com/freeconf/yang v0.0.0-20230831100447-20decdb7a190/go.mod h1:mWEJ47bQKL2+1uMaHsA6VjRtoO+svJ2LcIiN+StJqNY=
 github.com/getkin/kin-openapi v0.61.0/go.mod h1:7Yn5whZr5kJi6t+kShccXS8ae1APpYTW6yheSwk8Yi4=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-chi/chi/v5 v5.0.0/go.mod h1:BBug9lr0cqtdAhsu6R4AAdvufI0/XBzAQSsUqJpoZOs=

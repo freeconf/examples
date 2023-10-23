@@ -44,9 +44,6 @@ class Car():
         self.thread = threading.Thread(target=self.run, name="Car")
         self.thread.start()
 
-    def reset(self):
-        self.miles = 0
-
     def stop(self):
         """
           Will take up to poll_interval seconds to come to a stop

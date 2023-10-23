@@ -4,8 +4,8 @@ go 1.18
 
 require (
 	github.com/freeconf/gnmi v0.0.0-20230821111748-e357b8ee2853
-	github.com/freeconf/restconf v0.0.0-20230821105745-0b57571700da
-	github.com/freeconf/yang v0.0.0-20230821105535-d155c2806a88
+	github.com/freeconf/restconf v0.0.0-20230831100555-cc85cd79c19b
+	github.com/freeconf/yang v0.0.0-20230831100447-20decdb7a190
 	github.com/influxdata/influxdb-client-go/v2 v2.12.3
 	github.com/slack-go/slack v0.12.1
 )
