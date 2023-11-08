@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
 import unittest 
-import freeconf.parser
-import freeconf.nodeutil
-from manage import ManageApp
+from freeconf import parser, nodeutil, node, source
+from manage import manage_app
 from app import App 
 
 class TestManage(unittest.TestCase):
 
     def test_manage(self):
         app = App()
-        p = freeconf.parser.Parser()
-        m = p.load_module('..', 'my-app')
-        mgmt = ManageApp(app)
-        bwsr = freeconf.node.Browser(m, mgmt)
+        ypath = source.path("..")
+        m = parser.load_module_file(ypath, 'my-app')
+        mgmt = manage_app(app)
+        bwsr = node.Browser(m, mgmt)
         root = bwsr.root()
         try:
-            root.upsert_into(freeconf.nodeutil.json_write("tmp"))
+            actual = nodeutil.json_write_str(root)
+            self.assertEqual('{"users":{},"fonts":{},"bagels":{}}', actual)
         finally:
             root.release()
-        with open("tmp", "r") as f:
-            self.assertEqual('{"users":{},"fonts":{},"bagels":{}}', f.read())
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,7 +18,7 @@ $(SITE_DOCS) : $(SITE_EXAMPLE_DIR)/% : %.gotmpl ./site-docs/main.go $$(shell fin
 doc-images:
 	rsync -av  --include '*/' --include '*.png' --exclude '*' --exclude '/*/*/*/'  ./ $(SITE_EXAMPLE_DIR)
 
-test: test-go
+test: test-go test-py
 
 test-go:
 	go test ./...
