@@ -41,7 +41,9 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, 1, app.listeners.Len())
 
 	// write config starts car
-	err = root.UpdateFrom(nodeutil.ReadJSON(`{"speed":2000}`))
+	n, err := nodeutil.ReadJSON(`{"speed":2000}`)
+	fc.AssertEqual(t, nil, err)
+	err = root.UpdateFrom(n)
 	fc.AssertEqual(t, nil, err)
 	fc.AssertEqual(t, 2000, app.Speed)
 

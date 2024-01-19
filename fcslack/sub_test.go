@@ -52,7 +52,7 @@ func loadTestBrowser(send <-chan string) *node.Browser {
 	n := &nodeutil.Basic{
 		OnNotify: func(r node.NotifyRequest) (node.NotifyCloser, error) {
 			go func() {
-				r.Send(nodeutil.ReadJSON(<-send))
+				r.Send(readJson(<-send))
 			}()
 			nop := func() error {
 				return nil
@@ -61,4 +61,12 @@ func loadTestBrowser(send <-chan string) *node.Browser {
 		},
 	}
 	return node.NewBrowser(m, n)
+}
+
+func readJson(s string) node.Node {
+	n, err := nodeutil.ReadJSON(s)
+	if err != nil {
+		panic(err)
+	}
+	return n
 }

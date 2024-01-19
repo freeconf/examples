@@ -27,13 +27,14 @@ func TestManage(t *testing.T) {
 	}
 	m := parser.RequireModule(ypath, "fc-slack")
 	b := node.NewBrowser(m, Manage(c))
-
-	err := b.Root().UpsertFrom(nodeutil.ReadJSON(`{
+	n, err := nodeutil.ReadJSON(`{
 		"subscription" : [{
 			"module" : "m",
 			"path" : "n"
 		}]
-	}`))
+	}`)
+	fc.AssertEqual(t, nil, err)
+	err = b.Root().UpsertFrom(n)
 	fc.RequireEqual(t, nil, err)
 	fc.RequireEqual(t, 1, len(c.notifications))
 

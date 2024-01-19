@@ -38,7 +38,11 @@ func connectClient() {
 
 	// Example of config: I feel the need, the need for speed
 	// bad config is rejected in client before it is sent to server
-	err = root.UpsertFrom(nodeutil.ReadJSON(`{"speed":100}`))
+	n, err := nodeutil.ReadJSON(`{"speed":100}`)
+	if err != nil {
+		panic(err)
+	}
+	err = root.UpsertFrom(n)
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +98,11 @@ func connectClient() {
 	// Example of config: Enable debug logging on FreeCONF's remote RESTCONF server
 	serverSel := rcServer.Root()
 	defer serverSel.Release()
-	serverSel.UpsertFrom(nodeutil.ReadJSON(`{"debug":true}`))
+	n, err = nodeutil.ReadJSON(`{"debug":true}`)
+	if err != nil {
+		panic(err)
+	}
+	serverSel.UpsertFrom(n)
 	if err != nil {
 		panic(err)
 	}

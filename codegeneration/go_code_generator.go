@@ -3,14 +3,13 @@
 // there's no specific code generation utilities built into FreeCONF.  This example
 // illustrates how easy it is to generate Go code from the YANG using just the information
 // from the yang parser.  While this basic example generates go code, there are a lot
-// of directions you can go AND decisions you will need to make about some of the
+// of directions you can go AND decisions you will want to make about some of the
 // options in YANG that do not translate perfectly into Go code (i.e. binary types),
 // or might translate into multiple things (i.e. choice)
 //
-// A lot of projects start off immediately with code generation and may benefit
-// from using just the built in node implemtations in github.com/freeeconf/yang/nodeutil
-// like node.Reflect.
-//
+// A lot of projects start off immediately with code generation but should consider
+// using just the built in node implemtations in github.com/freeeconf/yang/nodeutil
+// first then swap that out with generated code as your project grows.
 package codegeneration
 
 import (

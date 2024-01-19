@@ -17,7 +17,7 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, nil, d.Add("fc-influx", Manage(s)))
 	b, err := d.Browser("fc-influx")
 	fc.AssertEqual(t, nil, err)
-	err = b.Root().UpsertFrom(nodeutil.ReadJSON(`{
+	n, err := nodeutil.ReadJSON(`{
 		"options" : {
 			"connection": { 
 				"addr": "http://localhost:8086/metrics",
@@ -31,7 +31,9 @@ func TestManage(t *testing.T) {
 				"abc" : "123"
 			}
 		}
-	}`))
+	}`)
+	fc.AssertEqual(t, nil, err)
+	err = b.Root().UpsertFrom(n)
 	fc.AssertEqual(t, nil, err)
 	fc.AssertEqual(t, 10*time.Second, s.options.Frequency)
 	fc.AssertEqual(t, "abc", s.options.Connection.ApiToken)

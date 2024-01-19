@@ -31,7 +31,7 @@ func main() {
 	//             there are many options in nodeutil package to base your
 	//             implementation on.  Here we use reflection because our yang file aligns
 	//             with out application data structure.
-	rootNode := nodeutil.Reflect{}.Object(&app)
+	rootNode := &nodeutil.Node{Object: &app}
 	d.Add("hello", rootNode)
 
 	// select RESTCONF as management protocol. gNMI is option as well
